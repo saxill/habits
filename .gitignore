@@ -1,0 +1,5 @@
+build/
+*.png
+la.log
+.DS_Store
+xcuserdata/
