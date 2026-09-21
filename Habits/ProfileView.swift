@@ -4,6 +4,7 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(\.theme) private var theme
     @ObservedObject private var store = ThemeStore.shared
+    @ObservedObject private var lac = LiveActivityController.shared
     @AppStorage(SettingsKey.username) private var username = "user"
     @AppStorage(SettingsKey.themeId) private var themeId = TerminalTheme.builtin()[0].id
     @AppStorage(SettingsKey.promptSymbol) private var promptSymbol = "$"
@@ -240,6 +241,11 @@ struct ProfileView: View {
                     Text("show habit name").term(13).foregroundStyle(.white)
                 }
                 .tint(theme.profileColor)
+                // on-device diagnosis: system permission + what the controller last did
+                Text("system: \(lac.systemEnabled ? "allowed" : "BLOCKED") · running: \(lac.runningCount) · last: \(lac.lastEvent)")
+                    .term(10)
+                    .foregroundStyle(Color(hex: theme.comment))
+                    .onAppear { lac.objectWillChange.send() }
                 CommentText(text: "// rendered on the dynamic island & lock screen", size: 11)
             }
         }

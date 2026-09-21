@@ -1,22 +1,34 @@
 import ActivityKit
 import Foundation
 import os
+import SwiftUI
 
 /// Bridges the app and the widget extension: one live activity per running timed habit,
 /// rendered on the Dynamic Island + lock screen.
-final class LiveActivityController {
+final class LiveActivityController: ObservableObject {
     static let shared = LiveActivityController()
     private static let log = Logger(subsystem: "com.sahil.habits.term", category: "LiveActivity")
     private var current: Activity<TimerActivityAttributes>?
 
+    /// Last notable event, surfaced in Profile for on-device diagnosis.
+    @Published var lastEvent = "no attempt yet"
+
+    var systemEnabled: Bool { ActivityAuthorizationInfo().areActivitiesEnabled }
+    var runningCount: Int { Activity<TimerActivityAttributes>.activities.count }
+
+    private func note(_ s: String) {
+        lastEvent = s
+        Self.log.info("\(s, privacy: .public)")
+    }
+
     func start(habit: Habit, target: TimeInterval) {
         guard UserDefaults.standard.object(forKey: SettingsKey.liveActivitiesEnabled) == nil
                 || UserDefaults.standard.bool(forKey: SettingsKey.liveActivitiesEnabled) else {
-            Self.log.info("disabled in settings — skipping")
+            note("off in app settings — skipping")
             return
         }
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            Self.log.error("activities disabled by system")
+            note("BLOCKED: system permission denied")
             return
         }
         // End every live activity of this type — including ones orphaned by a previous
@@ -57,9 +69,12 @@ final class LiveActivityController {
                 attributes: attributes,
                 content: ActivityContent(state: state, staleDate: nil)
             )
-            Self.log.info("started for \(habit.name, privacy: .public)")
+            let msg = "started for \(habit.name)"
+            note(msg)
         } catch {
-            Self.log.error("request failed: \(error.localizedDescription, privacy: .public)")
+            let msg = "request failed: \(error.localizedDescription)"
+            note(msg)
+            Self.log.error("\(msg, privacy: .public)")
         }
     }
 
@@ -69,6 +84,7 @@ final class LiveActivityController {
         // relaunch the original handle belongs to a dead process.
         let activities = Activity<TimerActivityAttributes>.activities
         guard !activities.isEmpty else { return }
+        note("stopping \(activities.count) activity(ies)")
         Task {
             for activity in activities {
                 let state = activity.content.state
