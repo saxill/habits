@@ -324,6 +324,10 @@ struct ThemeEditorView: View {
                     Button("save") {
                         if theme.name.trimmingCharacters(in: .whitespaces).isEmpty { theme.name = "custom" }
                         store.upsert(theme)
+                        if isNew {
+                            // a freshly created theme becomes the active one immediately
+                            UserDefaults.standard.set(theme.id, forKey: SettingsKey.themeId)
+                        }
                         dismiss()
                     }
                 }
