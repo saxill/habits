@@ -230,6 +230,7 @@ struct HabitRow: View {
     let habit: Habit
     let day: Date
     let ticker: Date
+    @State private var showEdit = false
 
     private var cal: Calendar { Calendar.current }
     private var isToday: Bool { cal.isDate(day, inSameDayAs: Date()) }
@@ -273,11 +274,19 @@ struct HabitRow: View {
         }
         .padding(.vertical, 2)
         .contextMenu {
+            Button {
+                showEdit = true
+            } label: {
+                Label("edit habit", systemImage: "slider.horizontal.3")
+            }
             Button(role: .destructive) {
                 delete()
             } label: {
                 Label("delete habit", systemImage: "trash")
             }
+        }
+        .sheet(isPresented: $showEdit) {
+            AddHabitView(habit: habit)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(habit.name), \(completion != nil ? "completed" : "not completed")")

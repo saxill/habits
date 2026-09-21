@@ -2,7 +2,10 @@ import SwiftUI
 import SwiftData
 
 /// Create/edit a habit: name, SF Symbol icon, color, type (check-off/timed), target, routine.
+/// Pass `habit` to edit an existing one in place; nil creates a new habit.
 struct AddHabitView: View {
+    var habit: Habit? = nil
+
     @Environment(\.modelContext) private var modelContext
     @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
@@ -15,6 +18,7 @@ struct AddHabitView: View {
     @State private var targetMinutes = 10
     @State private var comment = ""
     @State private var routineId: UUID?
+    @State private var loaded = false
 
     private static let iconChoices = [
         "figure.run", "figure.flexibility", "book", "brain.head.profile",
@@ -88,25 +92,47 @@ struct AddHabitView: View {
                     }
                 }
             }
-            .navigationTitle("new habit")
+            .navigationTitle(habit == nil ? "new habit" : "edit habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("add") {
-                        let habit = Habit(
-                            name: name.isEmpty ? "untitled" : name,
-                            icon: icon, color: color, type: type,
-                            comment: comment.isEmpty ? "" : "// \(comment)"
-                        )
-                        if type == .timed { habit.targetSeconds = TimeInterval(targetMinutes * 60) }
-                        if let rid = routineId, let r = routines.first(where: { $0.id == rid }) {
-                            habit.routine = r
-                            r.habits.append(habit)
+                    Button(habit == nil ? "add" : "save") {
+                        if let h = habit {
+                            h.name = name.isEmpty ? "untitled" : name
+                            h.icon = icon
+                            h.color = color
+                            if h.type != type {
+                                // demoting to checkbox ends any running timer
+                                if type == .checkbox {
+                                    h.startedAt = nil
+                                    LiveActivityController.shared.stop(done: false)
+                                }
+                                h.type = type
+                            }
+                            if type == .timed { h.targetSeconds = TimeInterval(targetMinutes * 60) }
+                            h.comment = comment.isEmpty ? "" : "// \(comment)"
+                            let newRoutine = routineId.flatMap { rid in routines.first { $0.id == rid } }
+                            if h.routine?.id != newRoutine?.id {
+                                h.routine?.habits.removeAll { $0.id == h.id }
+                                h.routine = newRoutine
+                                newRoutine?.habits.append(h)
+                            }
+                        } else {
+                            let habit = Habit(
+                                name: name.isEmpty ? "untitled" : name,
+                                icon: icon, color: color, type: type,
+                                comment: comment.isEmpty ? "" : "// \(comment)"
+                            )
+                            if type == .timed { habit.targetSeconds = TimeInterval(targetMinutes * 60) }
+                            if let rid = routineId, let r = routines.first(where: { $0.id == rid }) {
+                                habit.routine = r
+                                r.habits.append(habit)
+                            }
+                            modelContext.insert(habit)
                         }
-                        modelContext.insert(habit)
                         try? modelContext.save()
                         dismiss()
                     }
@@ -115,7 +141,19 @@ struct AddHabitView: View {
             }
         }
         .onAppear {
-            if routineId == nil { routineId = routines.first?.id }
+            guard !loaded else { return }
+            loaded = true
+            if let h = habit {
+                name = h.name
+                icon = h.icon
+                color = h.color
+                type = h.type
+                targetMinutes = max(1, Int(h.targetSeconds) / 60)
+                comment = h.comment.replacingOccurrences(of: "// ", with: "")
+                routineId = h.routine?.id
+            } else if routineId == nil {
+                routineId = routines.first?.id
+            }
         }
     }
 }
