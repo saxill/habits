@@ -20,6 +20,7 @@
 		9CCA619FBA479C05B76501C5 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62DB3513BE34597A6BEBC05 /* StatsView.swift */; };
 		BAB2407316E333A149BE6780 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A230BB12ECC0B63DF640A84 /* TimerActivityAttributes.swift */; };
 		DAA08D4A242F759EDD4AF75C /* HabitsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6F3330050384529BCE00EAB1 /* HabitsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DE83B0C63F096E06883E5ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36E5FCE9A1B8B9C878591887 /* Assets.xcassets */; };
 		E34F56F5F6E5EEF4978ACC5B /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34285DDD37251866EEE89A1 /* AddHabitView.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		23AA11A252CC8B35FFCB465C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		36E5FCE9A1B8B9C878591887 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47E463DE6D506DF84186E248 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		4A30013455D0A76FE93024DF /* HabitsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsApp.swift; sourceTree = "<group>"; };
 		4A5B1856BDDFDE629886DB26 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				D34285DDD37251866EEE89A1 /* AddHabitView.swift */,
+				36E5FCE9A1B8B9C878591887 /* Assets.xcassets */,
 				47E463DE6D506DF84186E248 /* Components.swift */,
 				4A30013455D0A76FE93024DF /* HabitsApp.swift */,
 				F26972F43E624CC1A33D700D /* HabitsView.swift */,
@@ -129,6 +132,7 @@
 			buildConfigurationList = 4EBD2785FA9FD6DF6731A1DC /* Build configuration list for PBXNativeTarget "Habits" */;
 			buildPhases = (
 				6C7EBF235A7C89D6AB679B52 /* Sources */,
+				2B081F6259EDDB1986C4AC79 /* Resources */,
 				6AFA04CEBD45D02388F21E8E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -169,6 +173,14 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					4F61129BB39F0B5F97F0BC76 = {
+						DevelopmentTeam = K75VPCXM64;
+						ProvisioningStyle = Automatic;
+					};
+					7F1780E971C40CAF1AC5CA9C = {
+						DevelopmentTeam = K75VPCXM64;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 7A38DF3C3C0B75EA27E50D4F /* Build configuration list for PBXProject "Habits" */;
@@ -190,6 +202,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B081F6259EDDB1986C4AC79 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DE83B0C63F096E06883E5ABE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1EC86833C9EF4BB1ECA5FD8D /* Sources */ = {
@@ -325,9 +348,10 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = K75VPCXM64;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -389,9 +413,10 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = K75VPCXM64;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
