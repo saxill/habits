@@ -8,6 +8,10 @@ struct TimerActivityAttributes: ActivityAttributes {
         var startDate: Date
         var targetSeconds: TimeInterval
         var isDone: Bool
+        // display prefs (what to show), captured at activity start
+        var showTimer: Bool = true
+        var showProgress: Bool = true
+        var showName: Bool = true
     }
 
     var habitName: String

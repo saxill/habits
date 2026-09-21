@@ -40,16 +40,20 @@ struct TimerLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(spacing: 2) {
-                        Text(context.attributes.habitName)
-                            .font(.system(size: 13, weight: .semibold, design: .monospaced))
-                            .foregroundStyle(.white)
-                            .lineLimit(1)
-                        ProgressView(
-                            timerInterval: context.state.startDate
-                                ... (context.state.startDate + context.state.targetSeconds),
-                            countsDown: false
-                        )
-                        .tint(Color(hexString: context.attributes.colorHex))
+                        if context.state.showName {
+                            Text(context.attributes.habitName)
+                                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                                .foregroundStyle(.white)
+                                .lineLimit(1)
+                        }
+                        if context.state.showProgress {
+                            ProgressView(
+                                timerInterval: context.state.startDate
+                                    ... (context.state.startDate + context.state.targetSeconds),
+                                countsDown: false
+                            )
+                            .tint(Color(hexString: context.attributes.colorHex))
+                        }
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
@@ -76,11 +80,15 @@ struct TimerLiveActivity: Widget {
     private func elapsedText(_ context: ActivityViewContext<TimerActivityAttributes>) -> some View {
         if context.state.isDone {
             return AnyView(Text("done ✓"))
-        } else {
+        } else if context.state.showTimer {
             return AnyView(Text(
                 timerInterval: context.state.startDate...Date.distantFuture,
                 countsDown: false
             ))
+        } else {
+            // timer hidden: show the target as static text instead
+            let total = Int(context.state.targetSeconds)
+            return AnyView(Text(String(format: "/%02d:%02d", total / 60, total % 60)))
         }
     }
 
@@ -88,15 +96,19 @@ struct TimerLiveActivity: Widget {
         HStack(spacing: 12) {
             Image(systemName: "timer").font(.system(size: 24)).foregroundStyle(Color(hexString: context.attributes.colorHex))
             VStack(alignment: .leading, spacing: 4) {
-                Text(context.attributes.habitName)
-                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(.white)
-                ProgressView(
-                    timerInterval: context.state.startDate
-                        ... (context.state.startDate + context.state.targetSeconds),
-                    countsDown: false
-                )
-                .tint(Color(hexString: context.attributes.colorHex))
+                if context.state.showName {
+                    Text(context.attributes.habitName)
+                        .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(.white)
+                }
+                if context.state.showProgress {
+                    ProgressView(
+                        timerInterval: context.state.startDate
+                            ... (context.state.startDate + context.state.targetSeconds),
+                        countsDown: false
+                    )
+                    .tint(Color(hexString: context.attributes.colorHex))
+                }
             }
             Spacer()
             elapsedText(context)

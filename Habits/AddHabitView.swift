@@ -4,6 +4,7 @@ import SwiftData
 /// Create/edit a habit: name, SF Symbol icon, color, type (check-off/timed), target, routine.
 struct AddHabitView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.theme) private var theme
     @Environment(\.dismiss) private var dismiss
     @Query(sort: [SortDescriptor(\Routine.sortIndex)]) private var routines: [Routine]
 
@@ -38,8 +39,8 @@ struct AddHabitView: View {
                                 Image(systemName: i)
                                     .font(.system(size: 16, design: .monospaced))
                                     .frame(width: 40, height: 36)
-                                    .foregroundStyle(icon == i ? TabAccent.habits : .secondary)
-                                    .background(RoundedRectangle(cornerRadius: 5).fill(icon == i ? TabAccent.habits.opacity(0.15) : .clear))
+                                    .foregroundStyle(icon == i ? theme.habitsColor : .secondary)
+                                    .background(RoundedRectangle(cornerRadius: 5).fill(icon == i ? theme.habitsColor.opacity(0.15) : .clear))
                             }
                             .buttonStyle(.plain)
                         }
@@ -64,7 +65,7 @@ struct AddHabitView: View {
                     TermSegmentBar(
                         options: HabitType.allCases.map { (id: $0.rawValue, label: $0.label) },
                         selection: type.rawValue,
-                        accent: TabAccent.habits
+                        accent: theme.habitsColor
                     ) { selectedId in
                         type = HabitType(rawValue: selectedId) ?? .checkbox
                     }

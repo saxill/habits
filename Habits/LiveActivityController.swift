@@ -10,6 +10,11 @@ final class LiveActivityController {
     private var current: Activity<TimerActivityAttributes>?
 
     func start(habit: Habit, target: TimeInterval) {
+        guard UserDefaults.standard.object(forKey: SettingsKey.liveActivitiesEnabled) == nil
+                || UserDefaults.standard.bool(forKey: SettingsKey.liveActivitiesEnabled) else {
+            Self.log.info("disabled in settings — skipping")
+            return
+        }
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             Self.log.error("activities disabled by system")
             return
@@ -38,10 +43,14 @@ final class LiveActivityController {
             emoji: "⏱",
             colorHex: habit.color.hex
         )
+        let d = UserDefaults.standard
         let state = TimerActivityAttributes.ContentState(
             startDate: Date(),
             targetSeconds: target,
-            isDone: false
+            isDone: false,
+            showTimer: d.object(forKey: SettingsKey.laShowTimer) == nil || d.bool(forKey: SettingsKey.laShowTimer),
+            showProgress: d.object(forKey: SettingsKey.laShowProgress) == nil || d.bool(forKey: SettingsKey.laShowProgress),
+            showName: d.object(forKey: SettingsKey.laShowName) == nil || d.bool(forKey: SettingsKey.laShowName)
         )
         do {
             current = try Activity.request(

@@ -3,25 +3,24 @@ import SwiftUI
 /// Profile tab — appearance settings (§4.3.1). Achievements ship in v2 per PRD §10.
 struct ProfileView: View {
     @Environment(\.theme) private var theme
+    @ObservedObject private var store = ThemeStore.shared
     @AppStorage(SettingsKey.username) private var username = "user"
-    @AppStorage(SettingsKey.themeId) private var themeId = TerminalTheme.all[0].id
+    @AppStorage(SettingsKey.themeId) private var themeId = TerminalTheme.builtin()[0].id
     @AppStorage(SettingsKey.promptSymbol) private var promptSymbol = "$"
     @AppStorage(SettingsKey.textSize) private var textSize = 0
     @AppStorage(SettingsKey.crossOutCompleted) private var crossOut = true
     @AppStorage(SettingsKey.moveCompletedToBottom) private var moveBottom = false
+    @AppStorage(SettingsKey.liveActivitiesEnabled) private var laEnabled = true
+    @AppStorage(SettingsKey.laShowTimer) private var laShowTimer = true
+    @AppStorage(SettingsKey.laShowProgress) private var laShowProgress = true
+    @AppStorage(SettingsKey.laShowName) private var laShowName = true
+    @State private var editingTheme: TerminalTheme?
 
     private static let symbols = ["$", "%", "#", ">"]
 
-    /// [foreground, comment, habits-accent, stats-accent, profile-accent] per theme.
+    /// [foreground, comment, habits-accent, stats-accent, profile-accent].
     private static func swatches(for t: TerminalTheme) -> [String] {
-        switch t.id {
-        case "dracula":
-            return [t.foreground, t.comment, "#FFB86C", "#50FA7B", "#FF79C6"]
-        case "solarized-dark":
-            return [t.foreground, t.comment, "#B58900", "#859900", "#D33682"]
-        default:
-            return [t.foreground, t.comment, "#FFB454", "#4ADE80", "#FF6BD6"]
-        }
+        [t.foreground, t.comment, t.habitsAccent, t.statsAccent, t.profileAccent]
     }
 
     var body: some View {
@@ -35,17 +34,21 @@ struct ProfileView: View {
                     promptSection
                     textSection
                     completedSection
+                    liveActivitySection
                     CommentText(text: "// achievements & xp ship in v2")
                 }
                 .padding(16)
             }
         }
         .background(Color(hex: theme.background))
+        .sheet(item: $editingTheme) { t in
+            ThemeEditorView(theme: t)
+        }
     }
 
     private var header: some View {
         VStack(spacing: 10) {
-            PromptHeader(command: "appearance", accent: TabAccent.profile)
+            PromptHeader(command: "appearance", accent: theme.profileColor)
             Divider().overlay(Color(hex: theme.comment).opacity(0.4))
         }
         .padding(.horizontal, 16)
@@ -57,10 +60,10 @@ struct ProfileView: View {
         VStack(alignment: .leading, spacing: 6) {
             CommentText(text: "// preview", size: 11)
             HStack(spacing: 10) {
-                Text("[✓]").term(13, .semibold).foregroundStyle(TabAccent.profile)
+                Text("[✓]").term(13, .semibold).foregroundStyle(theme.profileColor)
                 Image(systemName: "figure.run")
                     .font(.system(size: 12, design: .monospaced))
-                    .foregroundStyle(TabAccent.habits)
+                    .foregroundStyle(theme.habitsColor)
                 Text("morning run")
                     .term(13)
                     .foregroundStyle(.white)
@@ -102,24 +105,57 @@ struct ProfileView: View {
     private var themeSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             CommentText(text: "// theme", size: 11)
-            ForEach(TerminalTheme.all) { t in
-                Button {
-                    themeId = t.id
-                } label: {
-                    HStack(spacing: 10) {
-                        Text(themeId == t.id ? "[✓]" : "[ ]").term(13, .semibold)
-                            .foregroundStyle(TabAccent.profile)
-                        Text(t.name).term(13).foregroundStyle(.white)
-                        Spacer()
-                        // ANSI-style swatch dots
-                        HStack(spacing: 3) {
-                            ForEach(Self.swatches(for: t), id: \.self) { hex in
-                                Circle().fill(Color(hex: hex)).frame(width: 9, height: 9)
+            ForEach(store.all) { t in
+                HStack(spacing: 10) {
+                    Button {
+                        themeId = t.id
+                    } label: {
+                        HStack(spacing: 10) {
+                            Text(themeId == t.id ? "[✓]" : "[ ]").term(13, .semibold)
+                                .foregroundStyle(theme.profileColor)
+                            Text(t.name).term(13).foregroundStyle(.white)
+                            Spacer()
+                            // ANSI-style swatch dots
+                            HStack(spacing: 3) {
+                                ForEach(Self.swatches(for: t), id: \.self) { hex in
+                                    Circle().fill(Color(hex: hex)).frame(width: 9, height: 9)
+                                }
                             }
                         }
                     }
+                    .buttonStyle(.plain)
+
+                    // edit / copy / delete controls
+                    Button {
+                        editingTheme = t.isCustom ? t : ThemeStore.duplicate(t)
+                    } label: {
+                        Image(systemName: t.isCustom ? "slider.horizontal.3" : "doc.on.doc")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(theme.profileColor.opacity(0.8))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(t.isCustom ? "edit theme" : "duplicate theme")
+
+                    if t.isCustom {
+                        Button {
+                            if themeId == t.id { themeId = TerminalTheme.builtin()[0].id }
+                            store.delete(t)
+                        } label: {
+                            Image(systemName: "trash")
+                                .font(.system(size: 11, design: .monospaced))
+                                .foregroundStyle(Color(hex: "#FF6B6B").opacity(0.8))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("delete theme")
+                    }
                 }
-                .buttonStyle(.plain)
+            }
+            Button {
+                let fresh = ThemeStore.duplicate(store.byId(themeId))
+                store.upsert(fresh)
+                editingTheme = fresh
+            } label: {
+                CommentText(text: "+ new theme from current", size: 12)
             }
         }
     }
@@ -134,7 +170,7 @@ struct ProfileView: View {
                     } label: {
                         Text(promptSymbol == s ? "[\(s)]" : "[ ]")
                             .term(13, .semibold)
-                            .foregroundStyle(promptSymbol == s ? TabAccent.profile : Color(hex: theme.comment))
+                            .foregroundStyle(promptSymbol == s ? theme.profileColor : Color(hex: theme.comment))
                     }
                     .buttonStyle(.plain)
                 }
@@ -153,11 +189,11 @@ struct ProfileView: View {
                     } label: {
                         Text(["default", "larger", "largest"][tier])
                             .term(12, textSize == tier ? .bold : .regular)
-                            .foregroundStyle(textSize == tier ? TabAccent.profile : Color(hex: theme.comment))
+                            .foregroundStyle(textSize == tier ? theme.profileColor : Color(hex: theme.comment))
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
                             .overlay(RoundedRectangle(cornerRadius: 4)
-                                .stroke(textSize == tier ? TabAccent.profile : Color(hex: theme.comment).opacity(0.4), lineWidth: 0.5))
+                                .stroke(textSize == tier ? theme.profileColor : Color(hex: theme.comment).opacity(0.4), lineWidth: 0.5))
                     }
                     .buttonStyle(.plain)
                 }
@@ -173,11 +209,138 @@ struct ProfileView: View {
             Toggle(isOn: $crossOut) {
                 Text("cross out completed").term(13).foregroundStyle(.white)
             }
-            .tint(TabAccent.profile)
+            .tint(theme.profileColor)
             Toggle(isOn: $moveBottom) {
                 Text("move completed to bottom").term(13).foregroundStyle(.white)
             }
-            .tint(TabAccent.profile)
+            .tint(theme.profileColor)
+        }
+    }
+
+    private var liveActivitySection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            CommentText(text: "// live activities", size: 11)
+            Toggle(isOn: $laEnabled) {
+                Text("enable live activities").term(13).foregroundStyle(.white)
+            }
+            .tint(theme.profileColor)
+            .onChange(of: laEnabled) { _, on in
+                if !on { LiveActivityController.shared.stop(done: false) }
+            }
+            if laEnabled {
+                Toggle(isOn: $laShowTimer) {
+                    Text("show elapsed timer").term(13).foregroundStyle(.white)
+                }
+                .tint(theme.profileColor)
+                Toggle(isOn: $laShowProgress) {
+                    Text("show progress bar").term(13).foregroundStyle(.white)
+                }
+                .tint(theme.profileColor)
+                Toggle(isOn: $laShowName) {
+                    Text("show habit name").term(13).foregroundStyle(.white)
+                }
+                .tint(theme.profileColor)
+                CommentText(text: "// rendered on the dynamic island & lock screen", size: 11)
+            }
+        }
+    }
+}
+
+// MARK: - Theme color editor
+
+struct ThemeEditorView: View {
+    @Environment(\.theme) private var activeTheme
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var store = ThemeStore.shared
+    @State var theme: TerminalTheme
+    private let isNew: Bool
+
+    init(theme: TerminalTheme) {
+        // Editing an unsaved duplicate: give it a stable identity only if it's new.
+        _theme = State(initialValue: theme)
+        isNew = theme.id.hasPrefix("custom-") && !ThemeStore.shared.all.contains { $0.id == theme.id }
+    }
+
+    private struct Row: Identifiable {
+        let label: String
+        let keyPath: WritableKeyPath<TerminalTheme, String>
+        var id: String { label }
+    }
+    private let rows: [Row] = [
+        Row(label: "background", keyPath: \.background),
+        Row(label: "foreground", keyPath: \.foreground),
+        Row(label: "comment", keyPath: \.comment),
+        Row(label: "habits accent", keyPath: \.habitsAccent),
+        Row(label: "stats accent", keyPath: \.statsAccent),
+        Row(label: "profile accent", keyPath: \.profileAccent),
+    ]
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("name") {
+                    TextField("theme name", text: $theme.name)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                }
+                Section("colors") {
+                    ForEach(rows) { row in
+                        colorRow(row)
+                    }
+                }
+                // Live sample strip using the draft colors.
+                Section {
+                    HStack(spacing: 10) {
+                        Text("[✓]").font(.system(size: 13, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(Color(hex: theme.habitsAccent))
+                        Image(systemName: "timer")
+                            .font(.system(size: 12, design: .monospaced))
+                            .foregroundStyle(Color(hex: theme.habitsAccent))
+                        Text("morning run")
+                            .font(.system(size: 13, design: .monospaced))
+                            .foregroundStyle(Color(hex: theme.foreground))
+                        CommentText(text: "// sample")
+                        Spacer()
+                        Text("🔥").font(.system(size: 12))
+                    }
+                    .listRowBackground(Color(hex: theme.background))
+                }
+            }
+            .navigationTitle(isNew ? "new theme" : "edit theme")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("save") {
+                        if theme.name.trimmingCharacters(in: .whitespaces).isEmpty { theme.name = "custom" }
+                        store.upsert(theme)
+                        dismiss()
+                    }
+                }
+            }
+            .background(Color(hex: theme.background))
+        }
+    }
+
+    private func colorRow(_ row: Row) -> some View {
+        let binding = Binding<String>(
+            get: { theme[keyPath: row.keyPath] },
+            set: { theme[keyPath: row.keyPath] = $0 }
+        )
+        let colorBinding = Binding<Color>(
+            get: { Color(hex: theme[keyPath: row.keyPath]) },
+            set: { theme[keyPath: row.keyPath] = $0.hexString }
+        )
+        return HStack {
+            Text(row.label).term(12).foregroundStyle(.primary)
+            Spacer()
+            Text(theme[keyPath: row.keyPath])
+                .term(11)
+                .foregroundStyle(.secondary)
+            ColorPicker("", selection: colorBinding, supportsOpacity: false)
+                .labelsHidden()
         }
     }
 }

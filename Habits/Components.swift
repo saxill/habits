@@ -88,22 +88,22 @@ struct WeekStrip: View {
             VStack(spacing: 4) {
                 Text(Self.letters[index])
                     .term(10)
-                    .foregroundStyle(isSelected ? TabAccent.habits : Color(hex: theme.comment))
+                    .foregroundStyle(isSelected ? theme.habitsColor : Color(hex: theme.comment))
                 Text("\(cal.component(.day, from: day))")
                     .term(13, .semibold)
                     .foregroundStyle(
-                        isSelected ? TabAccent.habits :
+                        isSelected ? theme.habitsColor :
                         isFuture ? Color(hex: theme.comment) :
                         .white
                     )
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(isToday && !isSelected ? TabAccent.habits.opacity(0.25) : .clear)
+                            .fill(isToday && !isSelected ? theme.habitsColor.opacity(0.25) : .clear)
                     )
                     .padding(.horizontal, 6)
                 // fill bar: hatched/empty = future, intensity = completion %
                 RoundedRectangle(cornerRadius: 2)
-                    .fill(ratio <= 0 ? Color(hex: theme.comment).opacity(0.3) : TabAccent.habits.opacity(ratio < 0 ? 0.2 : 0.35 + 0.65 * ratio))
+                    .fill(ratio <= 0 ? Color(hex: theme.comment).opacity(0.3) : theme.habitsColor.opacity(ratio < 0 ? 0.2 : 0.35 + 0.65 * ratio))
                     .frame(height: 3)
             }
         }
@@ -151,7 +151,7 @@ extension EnvironmentValues {
 }
 
 private struct ThemeKey: EnvironmentKey {
-    static let defaultValue = TerminalTheme.all[0]
+    static let defaultValue = TerminalTheme.builtin()[0]
 }
 
 extension Date {

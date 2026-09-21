@@ -3,7 +3,8 @@ import SwiftData
 
 /// Root: tab bar habits / stats / profile (§6), theme + font-scale injected app-wide.
 struct RootView: View {
-    @AppStorage(SettingsKey.themeId) private var themeId = TerminalTheme.all[0].id
+    @ObservedObject private var store = ThemeStore.shared
+    @AppStorage(SettingsKey.themeId) private var themeId = TerminalTheme.builtin()[0].id
     @AppStorage(SettingsKey.textSize) private var textSize = 0
     @State private var tab = 0
 #if DEBUG
@@ -20,8 +21,8 @@ struct RootView: View {
             ProfileView()
                 .tabItem { Label("profile", systemImage: "person.crop.circle") }.tag(2)
         }
-        .tint(TabAccent.habits)
-        .environment(\.theme, TerminalTheme.byId(themeId))
+        .tint(activeTheme.habitsColor)
+        .environment(\.theme, activeTheme)
         .environment(\.fontScale, TextScale.multiplier(for: textSize))
         .onOpenURL { url in
             // simctl driving hooks (debug builds only)
@@ -52,6 +53,11 @@ struct RootView: View {
                 LiveActivityController.shared.start(habit: h, target: h.targetSeconds)
             }
         }
+    }
+
+    /// Active theme: resolves from the store on every render, so color edits apply live.
+    private var activeTheme: TerminalTheme {
+        store.byId(themeId)
     }
 
 #if DEBUG
@@ -119,7 +125,7 @@ struct HabitsView: View {
 
     private var header: some View {
         VStack(spacing: 10) {
-            PromptHeader(command: "daily", accent: TabAccent.habits)
+            PromptHeader(command: "daily", accent: theme.habitsColor)
             Divider().overlay(Color(hex: theme.comment).opacity(0.4))
         }
         .padding(.horizontal, 16)
@@ -172,6 +178,7 @@ struct RoutineSection: View {
     let routine: Routine
     let selectedDay: Date
     let ticker: Date
+    @Environment(\.theme) private var theme
     @AppStorage(SettingsKey.moveCompletedToBottom) private var moveBottom = false
     @State private var expanded = true
 
@@ -187,13 +194,13 @@ struct RoutineSection: View {
             HStack(spacing: 8) {
                 Image(systemName: routine.icon)
                     .font(.system(size: 13, design: .monospaced))
-                    .foregroundStyle(TabAccent.habits)
+                    .foregroundStyle(theme.habitsColor)
                 Text(routine.name).term(14, .semibold).foregroundStyle(.white)
                 CommentText(text: routine.subtitle)
                 Spacer()
                 Text("[\(done)/\(total)]")
                     .term(11, .semibold)
-                    .foregroundStyle(done == total && total > 0 ? TabAccent.habits : Color(hex: "#6E6E73"))
+                    .foregroundStyle(done == total && total > 0 ? theme.habitsColor : Color(hex: "#6E6E73"))
                     .monospacedDigit()
             }
         }
@@ -306,7 +313,7 @@ struct HabitRow: View {
             HStack(spacing: 3) {
                 Image(systemName: "timer")
                     .font(.system(size: 9, design: .monospaced))
-                    .foregroundStyle(TabAccent.habits)
+                    .foregroundStyle(theme.habitsColor)
                 Text(habit.formattedElapsed(since: started, now: ticker)).term(10, .semibold).monospacedDigit()
                 Text("/").term(10).foregroundStyle(Color(hex: theme.comment))
                 Text(habit.targetLabel.replacingOccurrences(of: "// ", with: "")).term(10).foregroundStyle(Color(hex: theme.comment))

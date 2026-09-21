@@ -54,12 +54,12 @@ struct StatsView: View {
                 } label: {
                     Text(s.rawValue)
                         .term(12, segment == s ? .bold : .regular)
-                        .foregroundStyle(segment == s ? TabAccent.stats : Color(hex: theme.comment))
+                        .foregroundStyle(segment == s ? theme.statsColor : Color(hex: theme.comment))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
                         .background(
                             RoundedRectangle(cornerRadius: 5)
-                                .fill(segment == s ? TabAccent.stats.opacity(0.15) : .clear)
+                                .fill(segment == s ? theme.statsColor.opacity(0.15) : .clear)
                         )
                 }
                 .buttonStyle(.plain)
@@ -74,7 +74,7 @@ struct StatsView: View {
 
     private var header: some View {
         VStack(spacing: 10) {
-            PromptHeader(command: "stats", accent: TabAccent.stats)
+            PromptHeader(command: "stats", accent: theme.statsColor)
             Divider().overlay(Color(hex: theme.comment).opacity(0.4))
         }
         .padding(.horizontal, 16)
@@ -141,11 +141,11 @@ private struct Heatmap: View {
                 ForEach(days, id: \.self) { day in
                     let ratio = Streaks.dayRatio(day, habits: habits)
                     RoundedRectangle(cornerRadius: 3)
-                        .fill(ratio <= 0 ? Color(hex: theme.comment).opacity(0.25) : TabAccent.stats.opacity(0.25 + 0.75 * max(0, ratio)))
+                        .fill(ratio <= 0 ? Color(hex: theme.comment).opacity(0.25) : theme.statsColor.opacity(0.25 + 0.75 * max(0, ratio)))
                         .aspectRatio(1, contentMode: .fit)
                         .overlay(
                             cal.isDateInToday(day) ?
-                                RoundedRectangle(cornerRadius: 3).stroke(TabAccent.stats, lineWidth: 1) : nil
+                                RoundedRectangle(cornerRadius: 3).stroke(theme.statsColor, lineWidth: 1) : nil
                         )
                 }
             }
@@ -182,7 +182,7 @@ private struct HabitStatsPanel: View {
             TermSegmentBar(
                 options: StatsView.Range.allCases.map { (id: $0.id, label: $0.rawValue) },
                 selection: range.id,
-                accent: TabAccent.stats
+                accent: theme.statsColor
             ) { selectedId in
                 range = StatsView.Range.allCases.first { $0.id == selectedId } ?? .d30
             }
@@ -259,7 +259,7 @@ private struct CompletionsCard: View {
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 3).fill(Color(hex: theme.comment).opacity(0.25))
                     RoundedRectangle(cornerRadius: 3)
-                        .fill(TabAccent.stats)
+                        .fill(theme.statsColor)
                         .frame(width: geo.size.width * min(1, rate))
                 }
             }
