@@ -81,10 +81,12 @@ final class ThemeStore: ObservableObject {
         } else {
             customThemes.append(theme)
         }
+        TerminalTheme.saveCustom(customThemes)
     }
 
     func delete(_ theme: TerminalTheme) {
         customThemes.removeAll { $0.id == theme.id }
+        TerminalTheme.saveCustom(customThemes)
     }
 
     static func duplicate(_ source: TerminalTheme) -> TerminalTheme {
