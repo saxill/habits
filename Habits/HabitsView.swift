@@ -265,9 +265,25 @@ struct HabitRow: View {
             statusMeta
         }
         .padding(.vertical, 2)
+        .contextMenu {
+            Button(role: .destructive) {
+                delete()
+            } label: {
+                Label("delete habit", systemImage: "trash")
+            }
+        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(habit.name), \(completion != nil ? "completed" : "not completed")")
         .accessibilityHint("Double tap to toggle")
+    }
+
+    private func delete() {
+        if habit.startedAt != nil {
+            LiveActivityController.shared.stop(done: false)
+        }
+        for c in habit.completions { modelContext.delete(c) }
+        modelContext.delete(habit)
+        try? modelContext.save()
     }
 
     @ViewBuilder
