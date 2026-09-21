@@ -88,7 +88,10 @@ struct TimerLiveActivity: Widget {
         } else {
             // timer hidden: show the target as static text instead
             let total = Int(context.state.targetSeconds)
-            return AnyView(Text(String(format: "/%02d:%02d", total / 60, total % 60)))
+            let text = total >= 3600
+                ? String(format: "/%02d:%02d:%02d", total / 3600, (total / 60) % 60, total % 60)
+                : String(format: "/%02d:%02d", total / 60, total % 60)
+            return AnyView(Text(text))
         }
     }
 
