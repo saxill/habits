@@ -61,10 +61,13 @@ struct AddHabitView: View {
                     }
                 }
                 Section("type") {
-                    Picker("", selection: $type) {
-                        ForEach(HabitType.allCases) { t in Text(t.label).tag(t) }
+                    TermSegmentBar(
+                        options: HabitType.allCases.map { (id: $0.rawValue, label: $0.label) },
+                        selection: type.rawValue,
+                        accent: TabAccent.habits
+                    ) { selectedId in
+                        type = HabitType(rawValue: selectedId) ?? .checkbox
                     }
-                    .pickerStyle(.segmented)
                     if type == .timed {
                         Stepper("target: \(targetMinutes) min", value: $targetMinutes, in: 1...480, step: 5)
                             .monospacedDigit()

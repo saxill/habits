@@ -31,12 +31,7 @@ struct StatsView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            Picker("", selection: $segment) {
-                ForEach(Segment.allCases) { Text($0.rawValue).term(12) }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 16)
-            .padding(.top, 10)
+            segmentBar
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     switch segment {
@@ -48,6 +43,33 @@ struct StatsView: View {
             }
         }
         .background(Color(hex: theme.background))
+    }
+
+    /// Terminal-style secondary nav (§4.2) — custom control, tinted per stats accent.
+    private var segmentBar: some View {
+        HStack(spacing: 6) {
+            ForEach(Segment.allCases) { s in
+                Button {
+                    segment = s
+                } label: {
+                    Text(s.rawValue)
+                        .term(12, segment == s ? .bold : .regular)
+                        .foregroundStyle(segment == s ? TabAccent.stats : Color(hex: theme.comment))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(segment == s ? TabAccent.stats.opacity(0.15) : .clear)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(s.rawValue) view")
+            }
+        }
+        .padding(3)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(hex: theme.comment).opacity(0.3), lineWidth: 0.5))
+        .padding(.horizontal, 16)
+        .padding(.top, 10)
     }
 
     private var header: some View {
@@ -157,10 +179,13 @@ private struct HabitStatsPanel: View {
                     .allowsHitTesting(false)
             }
 
-            Picker("", selection: $range) {
-                ForEach(StatsView.Range.allCases) { Text($0.rawValue).term(11) }
+            TermSegmentBar(
+                options: StatsView.Range.allCases.map { (id: $0.id, label: $0.rawValue) },
+                selection: range.id,
+                accent: TabAccent.stats
+            ) { selectedId in
+                range = StatsView.Range.allCases.first { $0.id == selectedId } ?? .d30
             }
-            .pickerStyle(.segmented)
 
             if let habit = activeHabit {
                 SummaryCard(habit: habit)

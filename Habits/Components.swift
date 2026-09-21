@@ -111,6 +111,38 @@ struct WeekStrip: View {
     }
 }
 
+/// Reusable terminal-style segmented control — plain buttons, no system Picker quirks.
+struct TermSegmentBar: View {
+    let options: [(id: String, label: String)]
+    let selection: String
+    let accent: Color
+    let onSelect: (String) -> Void
+
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(options, id: \.id) { option in
+                let isSelected = option.id == selection
+                Button {
+                    onSelect(option.id)
+                } label: {
+                    Text(option.label)
+                        .term(11, isSelected ? .bold : .regular)
+                        .foregroundStyle(isSelected ? accent : Color(hex: "#6E6E73"))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(isSelected ? accent.opacity(0.15) : .clear)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(option.label)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+    }
+}
+
 extension EnvironmentValues {
     var theme: TerminalTheme {
         get { self[ThemeKey.self] }
