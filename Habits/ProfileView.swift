@@ -301,7 +301,9 @@ struct ThemeEditorView: View {
                             .foregroundStyle(Color(hex: theme.foreground))
                         CommentText(text: "// sample")
                         Spacer()
-                        Text("🔥").font(.system(size: 12))
+                        Image(systemName: "flame.fill")
+                            .font(.system(size: 12, design: .monospaced))
+                            .foregroundStyle(Color(hex: theme.habitsAccent))
                     }
                     .listRowBackground(Color(hex: theme.background))
                 }
