@@ -21,7 +21,7 @@ final class LiveActivityController: ObservableObject {
         Self.log.info("\(s, privacy: .public)")
     }
 
-    func start(habit: Habit, target: TimeInterval) {
+    func start(habit: Habit, target: TimeInterval, retry: Int = 0) {
         guard UserDefaults.standard.object(forKey: SettingsKey.liveActivitiesEnabled) == nil
                 || UserDefaults.standard.bool(forKey: SettingsKey.liveActivitiesEnabled) else {
             note("off in app settings — skipping")
@@ -72,9 +72,18 @@ final class LiveActivityController: ObservableObject {
             let msg = "started for \(habit.name)"
             note(msg)
         } catch {
-            let msg = "request failed: \(error.localizedDescription)"
-            note(msg)
-            Self.log.error("\(msg, privacy: .public)")
+            // At launch the resume loop fires before the app is fully foreground;
+            // ActivityKit rejects with "Target is not foreground" — retry with backoff.
+            if error.localizedDescription.contains("not foreground") && retry < 5 {
+                Self.log.info("not foreground yet — retrying (\(retry + 1))")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    self.start(habit: habit, target: target, retry: retry + 1)
+                }
+            } else {
+                let msg = "request failed: \(error.localizedDescription)"
+                note(msg)
+                Self.log.error("\(msg, privacy: .public)")
+            }
         }
     }
 
