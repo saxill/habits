@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 /// Create/edit a habit: name, SF Symbol icon, color, type (check-off/timed), target, routine.
 /// Pass `habit` to edit an existing one in place; nil creates a new habit.
@@ -19,12 +20,29 @@ struct AddHabitView: View {
     @State private var comment = ""
     @State private var routineId: UUID?
     @State private var loaded = false
+    /// Reminder time, as minutes from midnight — the unit the model stores. Kept as a `Date`
+    /// here only so the picker can bind to it; the conversion happens at the edges.
+    @State private var reminderOn = false
+    @State private var reminderTime = AddHabitView.defaultReminderTime()
+    @State private var permissionBlocked = false
 
     private static let iconChoices = [
         "figure.run", "figure.flexibility", "book", "brain.head.profile",
         "drop", "square.and.pencil", "moon.zzz", "iphone.slash",
         "fork.knife", "bicycle", "music.note", "laptopcomputer",
     ]
+
+    /// 08:00 — a morning nudge is the common case, and a sensible thing to find already set when
+    /// the reminder is first switched on.
+    private static func defaultReminderTime() -> Date {
+        Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? Date()
+    }
+
+    /// Minutes from midnight, the unit the model stores.
+    private var reminderMinutes: Int {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
+        return (c.hour ?? 8) * 60 + (c.minute ?? 0)
+    }
 
     var body: some View {
         NavigationStack {
@@ -33,6 +51,8 @@ struct AddHabitView: View {
                     TextField("habit name", text: $name)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                        .submitLabel(.done)
+                        .onSubmit { hideKeyboard() }
                 }
                 Section("icon") {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 10) {
@@ -82,6 +102,8 @@ struct AddHabitView: View {
                     TextField("// e.g. after waking up", text: $comment)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                        .submitLabel(.done)
+                        .onSubmit { hideKeyboard() }
                 }
                 Section("routine") {
                     Picker("routine", selection: $routineId) {
@@ -91,7 +113,29 @@ struct AddHabitView: View {
                         }
                     }
                 }
+                Section("reminder") {
+                    Toggle("remind me", isOn: $reminderOn)
+                    if reminderOn {
+                        DatePicker("at", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                        Text("fires on the days this habit is scheduled")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundStyle(.secondary)
+                        if permissionBlocked {
+                            // A toggle that silently flips back is the worst version of this
+                            // screen: the setting looks broken and there is nowhere to go. The
+                            // permission is gone for good until it is changed in Settings, and
+                            // iOS will not ask twice, so say that and offer the way there.
+                            Button("notifications are off — open settings") {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                            .font(.system(size: 12, design: .monospaced))
+                        }
+                    }
+                }
             }
+            .keyboardDoneButton()
             .navigationTitle(habit == nil ? "new habit" : "edit habit")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -107,13 +151,14 @@ struct AddHabitView: View {
                             if h.type != type {
                                 // demoting to checkbox ends any running timer
                                 if type == .checkbox {
-                                    h.startedAt = nil
-                                    LiveActivityController.shared.stop(done: false)
+                                    h.clearTimer()
+                                    LiveActivityController.shared.stop(habitId: h.id, done: false)
                                 }
                                 h.type = type
                             }
                             if type == .timed { h.targetSeconds = TimeInterval(targetMinutes * 60) }
                             h.comment = comment.isEmpty ? "" : "// \(comment)"
+                            h.reminderMinutesFromMidnight = reminderOn ? reminderMinutes : nil
                             let newRoutine = routineId.flatMap { rid in routines.first { $0.id == rid } }
                             if h.routine?.id != newRoutine?.id {
                                 h.routine?.habits.removeAll { $0.id == h.id }
@@ -127,6 +172,7 @@ struct AddHabitView: View {
                                 comment: comment.isEmpty ? "" : "// \(comment)"
                             )
                             if type == .timed { habit.targetSeconds = TimeInterval(targetMinutes * 60) }
+                            habit.reminderMinutesFromMidnight = reminderOn ? reminderMinutes : nil
                             if let rid = routineId, let r = routines.first(where: { $0.id == rid }) {
                                 habit.routine = r
                                 r.habits.append(habit)
@@ -134,6 +180,10 @@ struct AddHabitView: View {
                             modelContext.insert(habit)
                         }
                         try? modelContext.save()
+                        // Rebuilds the schedule from what was just saved, so editing a time
+                        // replaces the old notification instead of adding a second one.
+                        HabitReminders.sync()
+                        SnapshotPublisher.publish(context: modelContext)
                         dismiss()
                     }
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -151,8 +201,30 @@ struct AddHabitView: View {
                 targetMinutes = max(1, Int(h.targetSeconds) / 60)
                 comment = h.comment.replacingOccurrences(of: "// ", with: "")
                 routineId = h.routine?.id
+                if let minutes = h.reminderMinutesFromMidnight {
+                    reminderOn = true
+                    reminderTime = Calendar.current.date(
+                        bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: Date()
+                    ) ?? Self.defaultReminderTime()
+                }
             } else if routineId == nil {
                 routineId = routines.first?.id
+            }
+        }
+        .onChange(of: reminderOn) { _, on in
+            guard on else { return }
+            // Asked for here rather than at launch: the reminder screen is the only place the
+            // request makes sense, and a prompt with no context behind it is the one people
+            // reflexively deny — which iOS then never asks again.
+            Task {
+                let granted = await WaterReminders.requestAuthorization()
+                if !granted {
+                    let status = await WaterReminders.authorizationStatus()
+                    // Denied outright, or dismissed? A dismissal can be asked about again later,
+                    // so only a real denial is a dead end worth pointing at Settings.
+                    reminderOn = !(status == .denied)
+                    permissionBlocked = status == .denied
+                }
             }
         }
     }

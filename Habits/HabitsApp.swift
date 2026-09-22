@@ -3,11 +3,34 @@ import SwiftData
 
 @main
 struct HabitsApp: App {
+    /// Reached by the notification delegate and the reminder scheduler, which run outside
+    /// the SwiftUI view tree.
+    static var sharedContainer: ModelContainer?
+
     let container: ModelContainer
 
     init() {
         container = try! ModelContainer(for: Habit.self, Routine.self, Completion.self)
+        HabitsApp.sharedContainer = container
         Self.seedIfNeeded(container: container)
+        NotificationRouter.shared.install()
+        WaterReminders.sync()
+        HabitReminders.sync()
+        // A live activity's "log"/"discard" button runs in this process — let it write
+        // through to the store immediately rather than waiting for the next foreground.
+        // It must use the *same* context SwiftUI injected: a second ModelContext would
+        // take the write, then the view's stale context would republish its old state and
+        // undo it (the habit bounced back to "running").
+        TimerIntentHooks.applyPending = {
+            let publish = {
+                MainActor.assumeIsolated { publishSharedSnapshot() }
+            }
+            if Thread.isMainThread {
+                publish()
+            } else {
+                DispatchQueue.main.async(execute: publish)
+            }
+        }
     }
 
     var body: some Scene {
@@ -64,4 +87,12 @@ struct HabitsApp: App {
         }
         try? ctx.save()
     }
+}
+
+/// Publishes from the main context — the one SwiftUI's views read, so an intent's write and
+/// the UI can't disagree about what happened.
+@MainActor
+private func publishSharedSnapshot() {
+    guard let container = HabitsApp.sharedContainer else { return }
+    SnapshotPublisher.publish(context: container.mainContext)
 }

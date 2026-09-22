@@ -16,9 +16,19 @@ targets:
     sources:
       - Habits
       - Shared
+    scheme:
+      # so `xcodebuild test -scheme Habits` runs the swipe tests
+      testTargets:
+        - HabitsUITests
+        - HabitsTests
     dependencies:
       - target: HabitsWidget
         embed: true
+    entitlements:
+      path: Habits/Habits.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.sahil.habits.term
     info:
       path: Habits/Info.plist
       properties:
@@ -41,6 +51,11 @@ targets:
     sources:
       - HabitsWidget
       - Shared
+    entitlements:
+      path: HabitsWidget/HabitsWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.sahil.habits.term
     info:
       path: HabitsWidget/Info.plist
       properties:
@@ -50,3 +65,34 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.sahil.habits.term.widget
+  # The only way to exercise a swipe. `simctl` cannot inject touches and neither can
+  # `devicectl`, so without this target the drag gestures would ship unverified — and a drag
+  # gesture that silently does nothing looks exactly like one that works.
+  HabitsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - HabitsUITests
+    dependencies:
+      - target: Habits
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sahil.habits.term.uitests
+        TEST_TARGET_NAME: Habits
+        GENERATE_INFOPLIST_FILE: YES
+  # The reminder schedule is arithmetic over dates — which days, what is already done, what has
+  # passed — and it is the kind of code that is wrong in ways nobody notices for a week. A UI
+  # test can only see that *something* was scheduled; this asserts which reminders, for when.
+  HabitsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - HabitsTests
+    dependencies:
+      - target: Habits
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sahil.habits.term.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Habits.app/Habits"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        GENERATE_INFOPLIST_FILE: YES

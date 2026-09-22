@@ -46,6 +46,23 @@ enum Streaks {
         return streak
     }
 
+    /// Longest run of consecutive days with at least one completion, ever.
+    ///
+    /// Distinct from `overall`, which measures the streak *as it stands today* and is broken by
+    /// a single missed day. Lifetime achievements have to ask this instead — "you once held a
+    /// 30-day streak" must stay true forever, not lapse the moment the current one ends.
+    static func bestOverall(completions: [Completion], calendar: Calendar = .current) -> Int {
+        let days = Set(completions.map { $0.day.startOfDay(calendar: calendar) }).sorted()
+        guard !days.isEmpty else { return 0 }
+        var best = 1, run = 1
+        for i in 1..<days.count {
+            let gap = calendar.dateComponents([.day], from: days[i - 1], to: days[i]).day ?? 0
+            run = gap == 1 ? run + 1 : 1
+            best = max(best, run)
+        }
+        return best
+    }
+
     /// Completion ratio (0…1) for one habit on a given day — drives the week strip fill.
     static func dayRatio(_ day: Date, habits: [Habit], calendar: Calendar = .current) -> Double {
         let scheduled = habits.filter { $0.scheduleDays.contains(weekdayIndex(day, calendar: calendar)) }

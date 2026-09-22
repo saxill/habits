@@ -7,30 +7,71 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06DE3B33D0F53B32AD99CC05 /* LiveActivityGrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D015B76869FE4570722317 /* LiveActivityGrace.swift */; };
+		0E1FD0E28E0DA1E331906501 /* KeyboardDismissTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59A9CD78BAD9F49E8A48668 /* KeyboardDismissTests.swift */; };
 		135676188B18E4D2016FDB96 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5B1856BDDFDE629886DB26 /* Theme.swift */; };
+		15153DBD80ED5CA72A0622A4 /* WaterReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D14DD488F1DE4F9F37A5E8 /* WaterReminders.swift */; };
 		197E877766E85A421BDA4F75 /* Streaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7028D67AF9C5A731D7D4C9 /* Streaks.swift */; };
 		2276B871FCCE01F7615C6E72 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F6376B2AF85E1A54FCDBB3 /* LiveActivityController.swift */; };
 		242E9CE1357362DCD5757F64 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A230BB12ECC0B63DF640A84 /* TimerActivityAttributes.swift */; };
 		28A42AE93E21C2B192A2F217 /* HabitsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89D7A39F1666A601E6A62157 /* HabitsWidget.swift */; };
 		42C27776F85F744E6E11FFD9 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E463DE6D506DF84186E248 /* Components.swift */; };
+		479724403094CBB905355DE7 /* HabitsSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D735011B7C0B1569136453D /* HabitsSnapshot.swift */; };
+		4B8006312848F838AF1E3C28 /* TimerIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B0B810F6A114168657B0B0 /* TimerIntents.swift */; };
 		531D8881B28DB84199373312 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F425D0401DC85662A3BAA675 /* ProfileView.swift */; };
 		57D904AD4B726E9221E4B067 /* HabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26972F43E624CC1A33D700D /* HabitsView.swift */; };
+		5F8452F0166E31B68237FE54 /* DayResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB93912DDA67A30B502629F /* DayResetTests.swift */; };
+		643F03011D9A8E431ED40548 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37346C1BB7A3F72E993F51 /* AchievementsView.swift */; };
+		667EFA5E4C5D3A1D26AFC3F2 /* SnapshotPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8F2B1E9F4DE80AF13655D /* SnapshotPublisher.swift */; };
+		681A6DA798B9ED4DD156CC96 /* TodayWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE4D547DD5130001F9EF848 /* TodayWidgets.swift */; };
+		69DCFD88C7CB68562767169F /* Achievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2F966D86D034B3FF606D4 /* Achievements.swift */; };
 		7135C507308AEF69A692C155 /* HabitsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A30013455D0A76FE93024DF /* HabitsApp.swift */; };
+		780DCA6F5BA291833D40CD30 /* ReminderScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */; };
+		89EFC1DEB3331E230166CD65 /* HabitsDebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */; };
+		918335B9BA43FD735B7671C0 /* SwipeNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFD5331DBC84A562B2C8A95 /* SwipeNavigationTests.swift */; };
 		9303E10D79E4FF8A6D7373D8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA11A252CC8B35FFCB465C /* Models.swift */; };
+		9663DB6A0379938AB11A7DB3 /* DayResetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EE74FCDB72E33F16B6692D /* DayResetUITests.swift */; };
 		9CCA619FBA479C05B76501C5 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62DB3513BE34597A6BEBC05 /* StatsView.swift */; };
+		9DC90B52153999080487B20F /* DayReset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5F58FC2B8E2B54AFBB0F01 /* DayReset.swift */; };
+		9E56301F3F74C5D3723468E9 /* TimerIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B0B810F6A114168657B0B0 /* TimerIntents.swift */; };
+		A5E8ED4530DB9B78B759D6B5 /* PendingToggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91018DFFD49AB191B30634 /* PendingToggles.swift */; };
+		A984ED2EC67726249260D4DA /* PendingToggles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B91018DFFD49AB191B30634 /* PendingToggles.swift */; };
 		BAB2407316E333A149BE6780 /* TimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A230BB12ECC0B63DF640A84 /* TimerActivityAttributes.swift */; };
+		C21735383ED184B25B93D7F8 /* ToggleHabitIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAB8401D9C2B47FD5B5D8B /* ToggleHabitIntent.swift */; };
+		CE1E2AB619DF28C47F18E1B0 /* HabitReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E16FE100963B6864BDED29 /* HabitReminders.swift */; };
+		D3DFEB43B390C9CF9F17B02D /* HabitsSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D735011B7C0B1569136453D /* HabitsSnapshot.swift */; };
+		D7A3A50C227FE41A8E880AE0 /* HabitsDebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */; };
 		DAA08D4A242F759EDD4AF75C /* HabitsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6F3330050384529BCE00EAB1 /* HabitsWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DB69869D0C68CE802C5C2EF3 /* PendingToggleApplier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485DD5CF6358727F004BCE1E /* PendingToggleApplier.swift */; };
 		DE83B0C63F096E06883E5ABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36E5FCE9A1B8B9C878591887 /* Assets.xcassets */; };
 		E34F56F5F6E5EEF4978ACC5B /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34285DDD37251866EEE89A1 /* AddHabitView.swift */; };
+		EC1CE76D10208EC4B4DAB085 /* LiveActivityGrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D015B76869FE4570722317 /* LiveActivityGrace.swift */; };
+		EEC40C0A286F4B8FCD2F8AE1 /* ReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67539CFE8CE920565BE836B /* ReminderTests.swift */; };
+		F4BD3C33929099ADF5D41084 /* ToggleHabitIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAB8401D9C2B47FD5B5D8B /* ToggleHabitIntent.swift */; };
+		F87994EB516E8FE2DD5760CF /* NotificationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4A6E3B3FCB9686623AF7C5 /* NotificationRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		21B3C8F950296826D00C3C76 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 378E62ACFE4CF42B3A18D134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F61129BB39F0B5F97F0BC76;
+			remoteInfo = Habits;
+		};
 		8B2A24A7BDEFBBD5CADF8B1E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 378E62ACFE4CF42B3A18D134 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 7F1780E971C40CAF1AC5CA9C;
 			remoteInfo = HabitsWidget;
+		};
+		F228987DA15F10EDD88F6804 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 378E62ACFE4CF42B3A18D134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F61129BB39F0B5F97F0BC76;
+			remoteInfo = Habits;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -49,31 +90,69 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01B0B810F6A114168657B0B0 /* TimerIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerIntents.swift; sourceTree = "<group>"; };
+		06D015B76869FE4570722317 /* LiveActivityGrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityGrace.swift; sourceTree = "<group>"; };
+		16A8F2B1E9F4DE80AF13655D /* SnapshotPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotPublisher.swift; sourceTree = "<group>"; };
+		17EE74FCDB72E33F16B6692D /* DayResetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayResetUITests.swift; sourceTree = "<group>"; };
 		23AA11A252CC8B35FFCB465C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		2D735011B7C0B1569136453D /* HabitsSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsSnapshot.swift; sourceTree = "<group>"; };
 		36E5FCE9A1B8B9C878591887 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		37DAB1BAA123907DEC577EFF /* HabitsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BEAB8401D9C2B47FD5B5D8B /* ToggleHabitIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleHabitIntent.swift; sourceTree = "<group>"; };
 		47E463DE6D506DF84186E248 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		485DD5CF6358727F004BCE1E /* PendingToggleApplier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingToggleApplier.swift; sourceTree = "<group>"; };
 		4A30013455D0A76FE93024DF /* HabitsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsApp.swift; sourceTree = "<group>"; };
 		4A5B1856BDDFDE629886DB26 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		4B4A6E3B3FCB9686623AF7C5 /* NotificationRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRouter.swift; sourceTree = "<group>"; };
 		579FA5520D9244F391810F92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5A230BB12ECC0B63DF640A84 /* TimerActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerActivityAttributes.swift; sourceTree = "<group>"; };
+		5C3568E14985422505BFA658 /* HabitsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CB93912DDA67A30B502629F /* DayResetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayResetTests.swift; sourceTree = "<group>"; };
+		6BD2F966D86D034B3FF606D4 /* Achievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievements.swift; sourceTree = "<group>"; };
 		6C7028D67AF9C5A731D7D4C9 /* Streaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streaks.swift; sourceTree = "<group>"; };
 		6F3330050384529BCE00EAB1 /* HabitsWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = HabitsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		72B5DA6835ED754CE17A6319 /* Habits.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Habits.entitlements; sourceTree = "<group>"; };
 		7E36ACE58ADDED4F687E80AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		89D7A39F1666A601E6A62157 /* HabitsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsWidget.swift; sourceTree = "<group>"; };
+		8B91018DFFD49AB191B30634 /* PendingToggles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingToggles.swift; sourceTree = "<group>"; };
 		A8F6376B2AF85E1A54FCDBB3 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsDebugLog.swift; sourceTree = "<group>"; };
+		AFFD5331DBC84A562B2C8A95 /* SwipeNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeNavigationTests.swift; sourceTree = "<group>"; };
+		BA5F58FC2B8E2B54AFBB0F01 /* DayReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayReset.swift; sourceTree = "<group>"; };
+		C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleTests.swift; sourceTree = "<group>"; };
+		C5E16FE100963B6864BDED29 /* HabitReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitReminders.swift; sourceTree = "<group>"; };
+		C67539CFE8CE920565BE836B /* ReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTests.swift; sourceTree = "<group>"; };
+		C7D14DD488F1DE4F9F37A5E8 /* WaterReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterReminders.swift; sourceTree = "<group>"; };
+		CAE4D547DD5130001F9EF848 /* TodayWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidgets.swift; sourceTree = "<group>"; };
 		CB71FC683723B421A43C92AD /* Habits.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Habits.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE37346C1BB7A3F72E993F51 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		D00AAEF6D405508D036510C2 /* HabitsWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsWidget.entitlements; sourceTree = "<group>"; };
 		D34285DDD37251866EEE89A1 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
 		E62DB3513BE34597A6BEBC05 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		F26972F43E624CC1A33D700D /* HabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsView.swift; sourceTree = "<group>"; };
 		F425D0401DC85662A3BAA675 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		F59A9CD78BAD9F49E8A48668 /* KeyboardDismissTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDismissTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		48707707B1EF626FF8EE4DF1 /* HabitsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				17EE74FCDB72E33F16B6692D /* DayResetUITests.swift */,
+				F59A9CD78BAD9F49E8A48668 /* KeyboardDismissTests.swift */,
+				C67539CFE8CE920565BE836B /* ReminderTests.swift */,
+				AFFD5331DBC84A562B2C8A95 /* SwipeNavigationTests.swift */,
+			);
+			path = HabitsUITests;
+			sourceTree = "<group>";
+		};
 		61274848EF03E3D33A85ABFE /* HabitsWidget */ = {
 			isa = PBXGroup;
 			children = (
+				D00AAEF6D405508D036510C2 /* HabitsWidget.entitlements */,
 				89D7A39F1666A601E6A62157 /* HabitsWidget.swift */,
 				579FA5520D9244F391810F92 /* Info.plist */,
+				CAE4D547DD5130001F9EF848 /* TodayWidgets.swift */,
 			);
 			path = HabitsWidget;
 			sourceTree = "<group>";
@@ -82,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				CB71FC683723B421A43C92AD /* Habits.app */,
+				5C3568E14985422505BFA658 /* HabitsTests.xctest */,
+				37DAB1BAA123907DEC577EFF /* HabitsUITests.xctest */,
 				6F3330050384529BCE00EAB1 /* HabitsWidget.appex */,
 			);
 			name = Products;
@@ -90,26 +171,50 @@
 		B8AEC72A8478939505AE9322 /* Habits */ = {
 			isa = PBXGroup;
 			children = (
+				6BD2F966D86D034B3FF606D4 /* Achievements.swift */,
+				CE37346C1BB7A3F72E993F51 /* AchievementsView.swift */,
 				D34285DDD37251866EEE89A1 /* AddHabitView.swift */,
 				36E5FCE9A1B8B9C878591887 /* Assets.xcassets */,
 				47E463DE6D506DF84186E248 /* Components.swift */,
+				BA5F58FC2B8E2B54AFBB0F01 /* DayReset.swift */,
+				C5E16FE100963B6864BDED29 /* HabitReminders.swift */,
+				72B5DA6835ED754CE17A6319 /* Habits.entitlements */,
 				4A30013455D0A76FE93024DF /* HabitsApp.swift */,
 				F26972F43E624CC1A33D700D /* HabitsView.swift */,
 				7E36ACE58ADDED4F687E80AE /* Info.plist */,
 				A8F6376B2AF85E1A54FCDBB3 /* LiveActivityController.swift */,
 				23AA11A252CC8B35FFCB465C /* Models.swift */,
+				4B4A6E3B3FCB9686623AF7C5 /* NotificationRouter.swift */,
+				485DD5CF6358727F004BCE1E /* PendingToggleApplier.swift */,
 				F425D0401DC85662A3BAA675 /* ProfileView.swift */,
+				16A8F2B1E9F4DE80AF13655D /* SnapshotPublisher.swift */,
 				E62DB3513BE34597A6BEBC05 /* StatsView.swift */,
 				6C7028D67AF9C5A731D7D4C9 /* Streaks.swift */,
 				4A5B1856BDDFDE629886DB26 /* Theme.swift */,
+				C7D14DD488F1DE4F9F37A5E8 /* WaterReminders.swift */,
 			);
 			path = Habits;
+			sourceTree = "<group>";
+		};
+		DE66E2E2DF241E6FDD68303D /* HabitsTests */ = {
+			isa = PBXGroup;
+			children = (
+				5CB93912DDA67A30B502629F /* DayResetTests.swift */,
+				C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */,
+			);
+			path = HabitsTests;
 			sourceTree = "<group>";
 		};
 		EC94648A9AC755CF53FBD6F7 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */,
+				2D735011B7C0B1569136453D /* HabitsSnapshot.swift */,
+				06D015B76869FE4570722317 /* LiveActivityGrace.swift */,
+				8B91018DFFD49AB191B30634 /* PendingToggles.swift */,
 				5A230BB12ECC0B63DF640A84 /* TimerActivityAttributes.swift */,
+				01B0B810F6A114168657B0B0 /* TimerIntents.swift */,
+				3BEAB8401D9C2B47FD5B5D8B /* ToggleHabitIntent.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -118,6 +223,8 @@
 			isa = PBXGroup;
 			children = (
 				B8AEC72A8478939505AE9322 /* Habits */,
+				DE66E2E2DF241E6FDD68303D /* HabitsTests */,
+				48707707B1EF626FF8EE4DF1 /* HabitsUITests */,
 				61274848EF03E3D33A85ABFE /* HabitsWidget */,
 				EC94648A9AC755CF53FBD6F7 /* Shared */,
 				7876C4864BA47B0FC71C8901 /* Products */,
@@ -127,6 +234,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3BBA5F4E40488C6B715135FC /* HabitsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B927E13EDFE6FEE6E8345D97 /* Build configuration list for PBXNativeTarget "HabitsTests" */;
+			buildPhases = (
+				0F8A494D39F2A4C5D0F8FBD6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5CD4DE789EB01D0361E8D44D /* PBXTargetDependency */,
+			);
+			name = HabitsTests;
+			packageProductDependencies = (
+			);
+			productName = HabitsTests;
+			productReference = 5C3568E14985422505BFA658 /* HabitsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4F61129BB39F0B5F97F0BC76 /* Habits */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EBD2785FA9FD6DF6731A1DC /* Build configuration list for PBXNativeTarget "Habits" */;
@@ -164,6 +289,24 @@
 			productReference = 6F3330050384529BCE00EAB1 /* HabitsWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		A57D2352A0A398016FA094F3 /* HabitsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CB177B364300C06E9F2EB2B /* Build configuration list for PBXNativeTarget "HabitsUITests" */;
+			buildPhases = (
+				5D7884CBC65FA8DF0B901A9F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F1387EA9314D0B8E8578ECD2 /* PBXTargetDependency */,
+			);
+			name = HabitsUITests;
+			packageProductDependencies = (
+			);
+			productName = HabitsUITests;
+			productReference = 37DAB1BAA123907DEC577EFF /* HabitsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -173,6 +316,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					3BBA5F4E40488C6B715135FC = {
+						DevelopmentTeam = K75VPCXM64;
+						ProvisioningStyle = Automatic;
+					};
 					4F61129BB39F0B5F97F0BC76 = {
 						DevelopmentTeam = K75VPCXM64;
 						ProvisioningStyle = Automatic;
@@ -180,6 +327,11 @@
 					7F1780E971C40CAF1AC5CA9C = {
 						DevelopmentTeam = K75VPCXM64;
 						ProvisioningStyle = Automatic;
+					};
+					A57D2352A0A398016FA094F3 = {
+						DevelopmentTeam = K75VPCXM64;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 4F61129BB39F0B5F97F0BC76;
 					};
 				};
 			};
@@ -199,6 +351,8 @@
 			targets = (
 				4F61129BB39F0B5F97F0BC76 /* Habits */,
 				7F1780E971C40CAF1AC5CA9C /* HabitsWidget */,
+				A57D2352A0A398016FA094F3 /* HabitsUITests */,
+				3BBA5F4E40488C6B715135FC /* HabitsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -215,12 +369,39 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0F8A494D39F2A4C5D0F8FBD6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F8452F0166E31B68237FE54 /* DayResetTests.swift in Sources */,
+				780DCA6F5BA291833D40CD30 /* ReminderScheduleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1EC86833C9EF4BB1ECA5FD8D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89EFC1DEB3331E230166CD65 /* HabitsDebugLog.swift in Sources */,
+				479724403094CBB905355DE7 /* HabitsSnapshot.swift in Sources */,
 				28A42AE93E21C2B192A2F217 /* HabitsWidget.swift in Sources */,
+				06DE3B33D0F53B32AD99CC05 /* LiveActivityGrace.swift in Sources */,
+				A984ED2EC67726249260D4DA /* PendingToggles.swift in Sources */,
 				BAB2407316E333A149BE6780 /* TimerActivityAttributes.swift in Sources */,
+				9E56301F3F74C5D3723468E9 /* TimerIntents.swift in Sources */,
+				681A6DA798B9ED4DD156CC96 /* TodayWidgets.swift in Sources */,
+				F4BD3C33929099ADF5D41084 /* ToggleHabitIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D7884CBC65FA8DF0B901A9F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9663DB6A0379938AB11A7DB3 /* DayResetUITests.swift in Sources */,
+				0E1FD0E28E0DA1E331906501 /* KeyboardDismissTests.swift in Sources */,
+				EEC40C0A286F4B8FCD2F8AE1 /* ReminderTests.swift in Sources */,
+				918335B9BA43FD735B7671C0 /* SwipeNavigationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,17 +409,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69DCFD88C7CB68562767169F /* Achievements.swift in Sources */,
+				643F03011D9A8E431ED40548 /* AchievementsView.swift in Sources */,
 				E34F56F5F6E5EEF4978ACC5B /* AddHabitView.swift in Sources */,
 				42C27776F85F744E6E11FFD9 /* Components.swift in Sources */,
+				9DC90B52153999080487B20F /* DayReset.swift in Sources */,
+				CE1E2AB619DF28C47F18E1B0 /* HabitReminders.swift in Sources */,
 				7135C507308AEF69A692C155 /* HabitsApp.swift in Sources */,
+				D7A3A50C227FE41A8E880AE0 /* HabitsDebugLog.swift in Sources */,
+				D3DFEB43B390C9CF9F17B02D /* HabitsSnapshot.swift in Sources */,
 				57D904AD4B726E9221E4B067 /* HabitsView.swift in Sources */,
 				2276B871FCCE01F7615C6E72 /* LiveActivityController.swift in Sources */,
+				EC1CE76D10208EC4B4DAB085 /* LiveActivityGrace.swift in Sources */,
 				9303E10D79E4FF8A6D7373D8 /* Models.swift in Sources */,
+				F87994EB516E8FE2DD5760CF /* NotificationRouter.swift in Sources */,
+				DB69869D0C68CE802C5C2EF3 /* PendingToggleApplier.swift in Sources */,
+				A5E8ED4530DB9B78B759D6B5 /* PendingToggles.swift in Sources */,
 				531D8881B28DB84199373312 /* ProfileView.swift in Sources */,
+				667EFA5E4C5D3A1D26AFC3F2 /* SnapshotPublisher.swift in Sources */,
 				9CCA619FBA479C05B76501C5 /* StatsView.swift in Sources */,
 				197E877766E85A421BDA4F75 /* Streaks.swift in Sources */,
 				135676188B18E4D2016FDB96 /* Theme.swift in Sources */,
 				242E9CE1357362DCD5757F64 /* TimerActivityAttributes.swift in Sources */,
+				4B8006312848F838AF1E3C28 /* TimerIntents.swift in Sources */,
+				C21735383ED184B25B93D7F8 /* ToggleHabitIntent.swift in Sources */,
+				15153DBD80ED5CA72A0622A4 /* WaterReminders.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,13 +445,41 @@
 			target = 7F1780E971C40CAF1AC5CA9C /* HabitsWidget */;
 			targetProxy = 8B2A24A7BDEFBBD5CADF8B1E /* PBXContainerItemProxy */;
 		};
+		5CD4DE789EB01D0361E8D44D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F61129BB39F0B5F97F0BC76 /* Habits */;
+			targetProxy = F228987DA15F10EDD88F6804 /* PBXContainerItemProxy */;
+		};
+		F1387EA9314D0B8E8578ECD2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4F61129BB39F0B5F97F0BC76 /* Habits */;
+			targetProxy = 21B3C8F950296826D00C3C76 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2DEC6058016ADF3CE71EBF68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sahil.habits.term.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Habits.app/Habits";
+			};
+			name = Debug;
+		};
 		394CF51B5517CE07E7F660CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Habits/Habits.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Habits/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -272,6 +495,7 @@
 		3FBF650F71D6BBB91B118BC8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = HabitsWidget/HabitsWidget.entitlements;
 				INFOPLIST_FILE = HabitsWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -284,10 +508,45 @@
 			};
 			name = Release;
 		};
+		4573C8AF214D6F24CCAD16CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sahil.habits.term.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Habits;
+			};
+			name = Release;
+		};
+		638037D9337EA4E7A4483981 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sahil.habits.term.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Habits;
+			};
+			name = Debug;
+		};
 		76B3CAC0E81F20B4D3D545E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Habits/Habits.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Habits/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -303,6 +562,7 @@
 		78FA2BCF8D7A4F4834DBEEE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = HabitsWidget/HabitsWidget.entitlements;
 				INFOPLIST_FILE = HabitsWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -438,6 +698,23 @@
 			};
 			name = Release;
 		};
+		CDC1411EDD143EEE5F1C4978 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sahil.habits.term.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Habits.app/Habits";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -450,11 +727,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		6CB177B364300C06E9F2EB2B /* Build configuration list for PBXNativeTarget "HabitsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				638037D9337EA4E7A4483981 /* Debug */,
+				4573C8AF214D6F24CCAD16CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		7A38DF3C3C0B75EA27E50D4F /* Build configuration list for PBXProject "Habits" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9AFEE9173C83D1584A12EF55 /* Debug */,
 				B8707A46F556EF009920A668 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B927E13EDFE6FEE6E8345D97 /* Build configuration list for PBXNativeTarget "HabitsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DEC6058016ADF3CE71EBF68 /* Debug */,
+				CDC1411EDD143EEE5F1C4978 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

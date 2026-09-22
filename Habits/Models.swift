@@ -64,6 +64,10 @@ final class Habit {
     var createdAt: Date = Date()
     /// Running timer for timed habits (nil = not running).
     var startedAt: Date? = nil
+    /// Set while the running timer is paused; `startedAt` stays put so resuming is exact.
+    var pausedAt: Date? = nil
+    /// Seconds lost to pauses so far, subtracted from the wall-clock elapsed time.
+    var pausedSeconds: TimeInterval = 0
     @Relationship(inverse: \Completion.habit) var completions: [Completion] = []
     var routine: Routine? = nil
 
@@ -98,6 +102,55 @@ final class Habit {
     func formattedElapsed(since start: Date, now: Date = Date()) -> String {
         let s = max(0, Int(now.timeIntervalSince(start)))
         return String(format: "%02d:%02d:%02d", s / 3600, (s % 3600) / 60, s % 60)
+    }
+
+    // MARK: - Running timer
+
+    var isPaused: Bool { startedAt != nil && pausedAt != nil }
+
+    /// Time actually spent on the timer, pauses excluded. While paused the clock stops,
+    /// so this returns the same value no matter when it's asked.
+    func elapsedSeconds(at now: Date = Date()) -> TimeInterval {
+        guard let started = startedAt else { return 0 }
+        return max(0, (pausedAt ?? now).timeIntervalSince(started) - pausedSeconds)
+    }
+
+    func formattedElapsed(now: Date = Date()) -> String {
+        let s = Int(elapsedSeconds(at: now))
+        let h = s / 3600, m = (s % 3600) / 60, sec = s % 60
+        // Drop the hour field under 60 minutes, matching the in-app row.
+        return h > 0
+            ? String(format: "%d:%02d:%02d", h, m, sec)
+            : String(format: "%02d:%02d", m, sec)
+    }
+
+    func pauseTimer(at now: Date = Date()) {
+        guard startedAt != nil, pausedAt == nil else { return }
+        pausedAt = now
+    }
+
+    /// Starts (or restarts) the timer, clearing any previous pause accounting.
+    func startTimer(at now: Date = Date()) {
+        startedAt = now
+        pausedAt = nil
+        pausedSeconds = 0
+    }
+
+    func resumeTimer(at now: Date = Date()) {
+        guard let paused = pausedAt else { return }
+        pausedSeconds += max(0, now.timeIntervalSince(paused))
+        pausedAt = nil
+    }
+
+    func togglePause(at now: Date = Date()) {
+        isPaused ? resumeTimer(at: now) : pauseTimer(at: now)
+    }
+
+    /// Clears the running timer, including its accumulated pause time.
+    func clearTimer() {
+        startedAt = nil
+        pausedAt = nil
+        pausedSeconds = 0
     }
 
     init(name: String, icon: String, color: HabitColor, type: HabitType,
