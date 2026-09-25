@@ -496,7 +496,11 @@ private struct WeekdayBreakdown: View {
                             : .white
                         )
                         .monospacedDigit()
-                        .frame(width: 32, alignment: .trailing)
+                        // Shrinks rather than wrapping "100%" onto two lines at the
+                        // larger text sizes; a fixed width keeps the bars aligned.
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .frame(width: 34, alignment: .trailing)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("\(row.label): \(row.due > 0 ? "\(Int((row.rate * 100).rounded())) percent" : "no habits scheduled")")

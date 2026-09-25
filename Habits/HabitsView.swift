@@ -433,7 +433,13 @@ struct RoutineSection: View {
                     .font(.system(size: 13, design: .monospaced))
                     .foregroundStyle(theme.habitsColor)
                 Text(routine.name).term(14, .semibold).foregroundStyle(.white)
+                    .lineLimit(1)
+                    .layoutPriority(1)
+                // One line: a time range broken across two ("09:00 –" / "13:00")
+                // stops reading as a range.
                 CommentText(text: routine.subtitle)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                 Spacer()
                 Text("[\(done)/\(total)]")
                     .term(11, .semibold)

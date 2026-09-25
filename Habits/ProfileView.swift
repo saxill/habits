@@ -272,7 +272,9 @@ struct ProfileView: View {
                     Button {
                         promptSymbol = s
                     } label: {
-                        Text(promptSymbol == s ? "[\(s)]" : "[ ]")
+                        // Every option shows its symbol — a blank `[ ]` hid what the
+                        // choice was.
+                        Text(verbatim: "[\(s)]")
                             .term(13, .semibold)
                             .foregroundStyle(promptSymbol == s ? theme.profileColor : Color(hex: theme.comment))
                     }

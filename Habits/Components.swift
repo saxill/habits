@@ -221,10 +221,18 @@ struct PromptHeader: View {
 
     var body: some View {
         // A `trailing` slot competes for the same line, and a 15-char username plus a long
-        // command can already fill it — so never let the prompt wrap. It shrinks a little
-        // instead, which reads as the shell making room rather than breaking mid-word.
+        // command can already fill it — so never let the prompt wrap. When the full prompt
+        // won't fit (the larger text sizes, the profile's level badge) it drops the host,
+        // like a shell with a short PS1, instead of truncating to "init.H…".
+        ViewThatFits(in: .horizontal) {
+            line(host: true)
+            line(host: false)
+        }
+    }
+
+    private func line(host: Bool) -> some View {
         HStack(spacing: 0) {
-            Text("\(username)[pro]@init.Habits ")
+            Text(host ? "\(username)[pro]@init.Habits " : "\(username) ")
                 .term(14, .semibold)
                 .foregroundStyle(accent)
             Text(symbol + " ")
