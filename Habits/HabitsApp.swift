@@ -13,6 +13,12 @@ struct HabitsApp: App {
         container = try! ModelContainer(for: Habit.self, Routine.self, Completion.self)
         HabitsApp.sharedContainer = container
         Self.seedIfNeeded(container: container)
+        // Installs seeded before 2026-09-25 carry nine days of made-up history.
+        MainActor.assumeIsolated {
+            if DemoHistory.removeIfNeeded(context: container.mainContext) > 0 {
+                publishSharedSnapshot()
+            }
+        }
         NotificationRouter.shared.install()
         WaterReminders.sync()
         HabitReminders.sync()
@@ -41,11 +47,13 @@ struct HabitsApp: App {
         }
     }
 
-    /// First-launch demo content so the app reads like the PRD screenshots immediately.
+    /// First-launch starter routines and habits — no history: every tick in the app is one
+    /// you made. (It used to backfill nine days of made-up completions; see DemoHistory.)
     private static func seedIfNeeded(container: ModelContainer) {
         let defaults = UserDefaults.standard
         guard !defaults.bool(forKey: SettingsKey.seeded) else { return }
         defaults.set(true, forKey: SettingsKey.seeded)
+        defaults.set(true, forKey: SettingsKey.demoHistoryRemoved)
         defaults.set("sahil", forKey: SettingsKey.username)
 
         let ctx = ModelContext(container)
@@ -70,21 +78,6 @@ struct HabitsApp: App {
             ctx.insert($0)
         }
 
-        // Backfill 9 days of history so streaks, the week strip and stats are alive on first open.
-        let cal = Calendar.current
-        var rng = SystemRandomNumberGenerator()
-        let all = [stretch, noPhone, water, focus, read, journal, noScreens]
-        for back in 1...9 {
-            let day = cal.date(byAdding: .day, value: -back, to: Date())!
-            for h in all {
-                if Bool.random(using: &rng) || back < 3 {
-                    let at = cal.date(bySettingHour: 8 + Int(rng.next() % 12), minute: Int(rng.next() % 60), second: 0, of: day)!
-                    let c = Completion(day: day, completedAt: at, value: h.type == .timed ? h.targetSeconds : 1)
-                    c.habit = h
-                    ctx.insert(c)
-                }
-            }
-        }
         try? ctx.save()
     }
 }

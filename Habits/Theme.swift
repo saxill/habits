@@ -127,6 +127,7 @@ enum SettingsKey {
     static let laShowName = "laShowName"
     static let laCountDown = "laCountDown"
     static let seeded = "seeded.v1"
+    static let demoHistoryRemoved = "demoHistoryRemoved.v1"
     static let waterRemindersEnabled = "waterRemindersEnabled"
     static let waterStartHour = "waterStartHour"
     static let waterEndHour = "waterEndHour"
