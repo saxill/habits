@@ -25,10 +25,12 @@
 		643F03011D9A8E431ED40548 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE37346C1BB7A3F72E993F51 /* AchievementsView.swift */; };
 		667EFA5E4C5D3A1D26AFC3F2 /* SnapshotPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16A8F2B1E9F4DE80AF13655D /* SnapshotPublisher.swift */; };
 		681A6DA798B9ED4DD156CC96 /* TodayWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAE4D547DD5130001F9EF848 /* TodayWidgets.swift */; };
+		69AA7FFBC146FAE20C89D3ED /* CompletionDayAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C2D96010AEE80DE5BBDC9 /* CompletionDayAnchor.swift */; };
 		69DCFD88C7CB68562767169F /* Achievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD2F966D86D034B3FF606D4 /* Achievements.swift */; };
 		7135C507308AEF69A692C155 /* HabitsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A30013455D0A76FE93024DF /* HabitsApp.swift */; };
 		780DCA6F5BA291833D40CD30 /* ReminderScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */; };
 		89EFC1DEB3331E230166CD65 /* HabitsDebugLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */; };
+		8D3CA4FA2373F4F8A836D3D1 /* AuditFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBC607E4E65F70C809DA1F6 /* AuditFixTests.swift */; };
 		918335B9BA43FD735B7671C0 /* SwipeNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFD5331DBC84A562B2C8A95 /* SwipeNavigationTests.swift */; };
 		9303E10D79E4FF8A6D7373D8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA11A252CC8B35FFCB465C /* Models.swift */; };
 		9663DB6A0379938AB11A7DB3 /* DayResetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EE74FCDB72E33F16B6692D /* DayResetUITests.swift */; };
@@ -123,6 +125,8 @@
 		AA6AFF6AB9BDCC812BECCA22 /* HabitsDebugLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsDebugLog.swift; sourceTree = "<group>"; };
 		AFFD5331DBC84A562B2C8A95 /* SwipeNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeNavigationTests.swift; sourceTree = "<group>"; };
 		BA5F58FC2B8E2B54AFBB0F01 /* DayReset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayReset.swift; sourceTree = "<group>"; };
+		BBBC607E4E65F70C809DA1F6 /* AuditFixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFixTests.swift; sourceTree = "<group>"; };
+		C33C2D96010AEE80DE5BBDC9 /* CompletionDayAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionDayAnchor.swift; sourceTree = "<group>"; };
 		C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduleTests.swift; sourceTree = "<group>"; };
 		C5E16FE100963B6864BDED29 /* HabitReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitReminders.swift; sourceTree = "<group>"; };
 		C67539CFE8CE920565BE836B /* ReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTests.swift; sourceTree = "<group>"; };
@@ -179,6 +183,7 @@
 				CE37346C1BB7A3F72E993F51 /* AchievementsView.swift */,
 				D34285DDD37251866EEE89A1 /* AddHabitView.swift */,
 				36E5FCE9A1B8B9C878591887 /* Assets.xcassets */,
+				C33C2D96010AEE80DE5BBDC9 /* CompletionDayAnchor.swift */,
 				47E463DE6D506DF84186E248 /* Components.swift */,
 				BA5F58FC2B8E2B54AFBB0F01 /* DayReset.swift */,
 				96514D4D29B1053366346C66 /* DemoHistory.swift */,
@@ -204,6 +209,7 @@
 		DE66E2E2DF241E6FDD68303D /* HabitsTests */ = {
 			isa = PBXGroup;
 			children = (
+				BBBC607E4E65F70C809DA1F6 /* AuditFixTests.swift */,
 				5CB93912DDA67A30B502629F /* DayResetTests.swift */,
 				2D1E868459ED24EC1F825818 /* DemoHistoryTests.swift */,
 				C38A34258E5DA1E48A804856 /* ReminderScheduleTests.swift */,
@@ -379,6 +385,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D3CA4FA2373F4F8A836D3D1 /* AuditFixTests.swift in Sources */,
 				5F8452F0166E31B68237FE54 /* DayResetTests.swift in Sources */,
 				FC2915EA47FFEF4E9D815550 /* DemoHistoryTests.swift in Sources */,
 				780DCA6F5BA291833D40CD30 /* ReminderScheduleTests.swift in Sources */,
@@ -419,6 +426,7 @@
 				69DCFD88C7CB68562767169F /* Achievements.swift in Sources */,
 				643F03011D9A8E431ED40548 /* AchievementsView.swift in Sources */,
 				E34F56F5F6E5EEF4978ACC5B /* AddHabitView.swift in Sources */,
+				69AA7FFBC146FAE20C89D3ED /* CompletionDayAnchor.swift in Sources */,
 				42C27776F85F744E6E11FFD9 /* Components.swift in Sources */,
 				9DC90B52153999080487B20F /* DayReset.swift in Sources */,
 				10D485D8BB67BED4F5F72A45 /* DemoHistory.swift in Sources */,

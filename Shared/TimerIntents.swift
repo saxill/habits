@@ -120,12 +120,13 @@ enum TimerActivityEnding {
             for: done ? LiveActivityGrace.doneGrace : LiveActivityGrace.discardGrace)
         for activity in activities {
             var state = activity.content.state
+            // Stamp the real time spent BEFORE clearing the pause state: a log tap while
+            // paused must not bill the ongoing pause as work.
+            let ongoingPause = state.pausedAt.map { max(0, Date().timeIntervalSince($0)) } ?? 0
             state.isDone = done
             state.pausedAt = nil
             if done {
-                // Stamp the real time spent so the completion card shows what was logged,
-                // not the target it was aiming at (they differ when ending early or paused).
-                state.loggedSeconds = max(0, Date().timeIntervalSince(state.startDate) - state.pausedSeconds)
+                state.loggedSeconds = max(0, Date().timeIntervalSince(state.startDate) - state.pausedSeconds - ongoingPause)
             }
             await activity.end(
                 ActivityContent(state: state, staleDate: nil),

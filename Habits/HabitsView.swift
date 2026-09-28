@@ -314,7 +314,12 @@ struct HabitsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.theme) private var theme
     @Query(sort: [SortDescriptor(\Routine.sortIndex)]) private var routines: [Routine]
+    @Query(sort: [SortDescriptor(\Habit.sortIndex)]) private var everyHabit: [Habit]
     @State private var selectedDay: Date = Date()
+    /// Whether `selectedDay` is today *because it is today* (rather than a past day picked
+    /// from the week strip). When it is, the day follows the midnight rollover below.
+    @State private var selectedIsToday = true
+    @State private var lastSeenDay = Date()
     @State private var showAddHabit = false
     @State private var ticker: Date = Date() // drives live timer text
 
@@ -326,7 +331,8 @@ struct HabitsView: View {
         "// refactor yourself, one commit a day",
     ]
 
-    private var allHabits: [Habit] { routines.flatMap { $0.habits } }
+    private var unfiledHabits: [Habit] { everyHabit.filter { $0.routine == nil } }
+    private var allHabits: [Habit] { routines.flatMap { $0.habits } + unfiledHabits }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -340,7 +346,7 @@ struct HabitsView: View {
                     WeekStrip(
                         week: selectedDay.weekDates(),
                         selected: selectedDay,
-                        onSelect: { selectedDay = $0 },
+                        onSelect: { selectedDay = $0; selectedIsToday = Calendar.current.isDateInToday($0) },
                         habits: allHabits
                     )
                     routineList
@@ -357,7 +363,21 @@ struct HabitsView: View {
         }
         .background(Color(hex: theme.background))
         .sheet(isPresented: $showAddHabit) { AddHabitView() }
-        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { ticker = $0 }
+        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { now in
+            ticker = now
+            rollDayIfNeeded(to: now)
+        }
+    }
+
+    /// The tab stays on the day it is showing — but "today" moves at midnight. An app left
+    /// open (or foregrounded the next morning) used to keep ticking into yesterday; now a
+    /// day that *is* today follows the rollover, while a past day picked from the week
+    /// strip stays put until the user moves off it.
+    private func rollDayIfNeeded(to now: Date) {
+        let cal = Calendar.current
+        guard !cal.isDate(now, inSameDayAs: lastSeenDay) else { return }
+        lastSeenDay = now
+        if selectedIsToday { selectedDay = now }
     }
 
     private var header: some View {
@@ -399,17 +419,71 @@ struct HabitsView: View {
 
     @ViewBuilder
     private var routineList: some View {
-        if routines.isEmpty {
+        if routines.isEmpty && unfiledHabits.isEmpty {
             CommentText(text: "// no routines yet — tap + add habit")
         } else {
             ForEach(routines) { routine in
                 RoutineSection(routine: routine, selectedDay: selectedDay, ticker: ticker)
+            }
+            // A habit filed under "none" used to disappear from this tab entirely — still
+            // counted by stats and reminders, but untickable and uneditable from here.
+            if !unfiledHabits.isEmpty {
+                UnfiledSection(habits: unfiledHabits, selectedDay: selectedDay, ticker: ticker)
             }
         }
     }
 }
 
 // MARK: - Collapsible routine section
+
+/// Habits filed under "none". Same shape as a routine section so they read as one list —
+/// they just have no routine header above them.
+struct UnfiledSection: View {
+    let habits: [Habit]
+    let selectedDay: Date
+    let ticker: Date
+    @Environment(\.theme) private var theme
+    @AppStorage(SettingsKey.moveCompletedToBottom) private var moveBottom = false
+    @State private var expanded = true
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $expanded) {
+            VStack(spacing: 6) {
+                ForEach(sortedHabits) { habit in
+                    HabitRow(habit: habit, day: selectedDay, ticker: ticker)
+                }
+            }
+            .padding(.top, 2)
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "tray")
+                    .font(.system(size: 13, design: .monospaced))
+                    .foregroundStyle(theme.habitsColor)
+                Text("unfiled").term(14, .semibold).foregroundStyle(.white)
+                CommentText(text: "// no routine")
+                Spacer()
+                Text("[\(done)/\(total)]")
+                    .term(11, .semibold)
+                    .foregroundStyle(done == total && total > 0 ? theme.habitsColor : Color(hex: "#6E6E73"))
+                    .monospacedDigit()
+            }
+        }
+        .tint(Color(hex: "#6E6E73"))
+    }
+
+    private var habitsForDay: [Habit] {
+        habits.filter { $0.scheduleDays.contains(Streaks.weekdayIndex(selectedDay)) }
+    }
+    private var sortedHabits: [Habit] {
+        var list = habitsForDay.sorted { $0.sortIndex < $1.sortIndex }
+        if moveBottom {
+            list.sort { ($0.completion(on: selectedDay) != nil ? 1 : 0) < ($1.completion(on: selectedDay) != nil ? 1 : 0) }
+        }
+        return list
+    }
+    private var total: Int { habitsForDay.count }
+    private var done: Int { habitsForDay.filter { $0.completion(on: selectedDay) != nil }.count }
+}
 
 struct RoutineSection: View {
     let routine: Routine
@@ -678,8 +752,12 @@ struct HabitRow: View {
         if let existing = habit.completion(on: day) {
             modelContext.delete(existing)
             habit.completions.removeAll { $0 == existing }
-            habit.clearTimer()
-            LiveActivityController.shared.stop(habitId: habit.id, done: false)
+            // The timer belongs to the day it was *started* on (DayReset's rule): un-ticking
+            // a past day must not stop today's run.
+            if let started = habit.startedAt, cal.isDate(started, inSameDayAs: day) {
+                habit.clearTimer()
+                LiveActivityController.shared.stop(habitId: habit.id, done: false)
+            }
         } else if habit.type == .timed, isToday {
             if habit.startedAt == nil {
                 // start timer + Dynamic Island live activity

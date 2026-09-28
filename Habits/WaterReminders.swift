@@ -13,6 +13,14 @@ enum WaterReminders {
     /// the schedule, and sweeping it up took back a snooze the user had just asked for.
     static let snoozeId = "water.snooze"
 
+    /// How many days of concrete reminders are kept scheduled.
+    ///
+    /// This started as one repeating trigger per slot — cheap, but repeating triggers freeze
+    /// their content, so the first reminder after midnight still quoted *yesterday's* glass
+    /// count. A rolling window of concrete requests is rebuilt with each day's own tally,
+    /// the same way HabitReminders works; the app re-arms it every activation.
+    static let lookaheadDays = 2
+
     /// Glasses a full day is worth, used for the "N/8" line in the reminder body.
     static let goal = 8
 
@@ -63,19 +71,27 @@ enum WaterReminders {
         let interval = d.object(forKey: SettingsKey.waterInterval) as? Int ?? 120
 
         let habit = currentWaterHabit()
-        // The tally, not a done/not-done count. It used to be the latter — and since a check-off
-        // records exactly one completion a day, the line could read 0 or 1 against a goal of 8
-        // and never climb, which read as "logging didn't work".
-        let glasses = glasses(on: Date(), for: habit)
 
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { pending in
             let ours = pending.map(\.identifier)
-                .filter { $0.hasPrefix(idPrefix) && $0 != snoozeId }
+                .filter { $0.hasPrefix(idPrefix) && !$0.hasPrefix("\(idPrefix)snooze") }
             center.removePendingNotificationRequests(withIdentifiers: ours)
             guard enabled else { return }
-            for comps in slots(startHour: start, endHour: end, intervalMinutes: interval) {
-                center.add(request(for: comps, habit: habit, glasses: glasses))
+            let cal = Calendar.current
+            let today = cal.startOfDay(for: Date())
+            for offset in 0..<lookaheadDays {
+                guard let day = cal.date(byAdding: .day, value: offset, to: today) else { continue }
+                // Each day's reminders quote *that day's* tally — zero for tomorrow until
+                // the app rebuilds the window, never the count from the day before.
+                let glasses = glasses(on: day, for: habit)
+                for comps in slots(startHour: start, endHour: end, intervalMinutes: interval) {
+                    let minutes = (comps.hour ?? 0) * 60 + (comps.minute ?? 0)
+                    guard let fire = cal.date(
+                        bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: day
+                    ), fire > Date() else { continue }
+                    center.add(request(for: fire, habit: habit, glasses: glasses))
+                }
             }
         }
     }
@@ -94,10 +110,21 @@ enum WaterReminders {
         )
     }
 
-    private static func request(for comps: DateComponents, habit: Habit?, glasses: Int) -> UNNotificationRequest {
-        let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
-        let id = "\(idPrefix)\(comps.hour ?? 0):\(String(format: "%02d", comps.minute ?? 0))"
-        return UNNotificationRequest(identifier: id, content: notificationContent(habit: habit, glasses: glasses), trigger: trigger)
+    private static func request(for fire: Date, habit: Habit?, glasses: Int) -> UNNotificationRequest {
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents(fire), repeats: false)
+        // The timestamp is in the id so every occurrence is its own request — the way the
+        // habit reminders do it.
+        let stamp = ISO8601DateFormatter().string(from: fire)
+        return UNNotificationRequest(
+            identifier: "\(idPrefix)\(stamp)",
+            content: notificationContent(habit: habit, glasses: glasses),
+            trigger: trigger
+        )
+    }
+
+    /// Y/M/D/H/M of one fire date, the unit a non-repeating trigger takes.
+    private static func dateComponents(_ fire: Date) -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
     }
 
     private static func notificationContent(habit: Habit?, glasses: Int) -> UNMutableNotificationContent {

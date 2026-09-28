@@ -75,14 +75,25 @@ enum PendingToggleQueue {
         if let i = list.firstIndex(where: {
             $0.habitId == entry.habitId && cal.isDate($0.day, inSameDayAs: entry.day)
         }) {
-            // Glasses *accumulate*, unlike every other field here. Replacing would mean two
-            // "log glass" taps landing before the app applies them counted as one glass — the
-            // exact kind of silent undercount this change exists to remove. Anything else
-            // replaces, because a done/undone is a state rather than a quantity.
-            if let add = entry.glasses, let existing = list[i].glasses {
-                list[i].glasses = existing + add
+            // Merge instead of replacing wholesale: these calls express *different fields* of
+            // one habit's day, and a tap of one kind erasing a queued tap of another is how a
+            // widget tick used to vanish under the next live-activity pause.
+            //
+            //   stopTimer  — "discard": log nothing, so it supersedes everything queued.
+            //   pause      — touches only the pause state; done and glasses survive.
+            //   glasses    — accumulate (two "log glass" taps are two glasses, not one), and
+            //                the first glass still ticks the day.
+            //   plain done — replaces the done-state, which is a state rather than a quantity.
+            if entry.stopTimer {
+                list[i] = PendingToggle(habitId: entry.habitId, day: entry.day, done: false,
+                                        at: entry.at, stopTimer: true)
+            } else if let pause = entry.pause {
+                list[i].pause = pause
+            } else if let add = entry.glasses {
+                list[i].glasses = (list[i].glasses ?? 0) + add
+                if entry.done { list[i].done = true }
             } else {
-                list[i] = entry
+                list[i].done = entry.done
             }
         } else {
             list.append(entry)

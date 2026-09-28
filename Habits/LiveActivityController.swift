@@ -217,11 +217,13 @@ final class LiveActivityController: ObservableObject {
                 // Mutate the live state rather than rebuilding it: the day counts, streak and
                 // display prefs it carries are what the completion card renders from.
                 var state = activity.content.state
+                // Stamp the real time spent BEFORE clearing the pause state: logging while
+                // paused must not bill the ongoing pause as work.
+                let ongoingPause = state.pausedAt.map { max(0, Date().timeIntervalSince($0)) } ?? 0
                 state.isDone = done
                 state.pausedAt = nil
                 if done {
-                    // Real time spent, so the card reports what was logged rather than the target.
-                    state.loggedSeconds = max(0, Date().timeIntervalSince(state.startDate) - state.pausedSeconds)
+                    state.loggedSeconds = max(0, Date().timeIntervalSince(state.startDate) - state.pausedSeconds - ongoingPause)
                 }
                 await activity.end(
                     ActivityContent(state: state, staleDate: nil),

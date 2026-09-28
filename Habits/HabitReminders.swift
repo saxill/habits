@@ -18,6 +18,10 @@ enum HabitReminders {
     static let doneAction = "HABIT_DONE"
     static let snoozeAction = "HABIT_SNOOZE"
     static let idPrefix = "habit."
+    /// Named separately so a rebuild can leave snoozes alone: they share the prefix but are
+    /// not part of the schedule, and sweeping them up took back a deferral the user had just
+    /// asked for. (Habit ids are hex, so a real reminder's id can never start with "snooze".)
+    static let snoozePrefix = "\(idPrefix)snooze"
 
     /// One-off requests are scheduled for the next few days rather than as one repeating
     /// weekly trigger per weekday.
@@ -96,7 +100,8 @@ enum HabitReminders {
 
         let center = UNUserNotificationCenter.current()
         center.getPendingNotificationRequests { pending in
-            let ours = pending.map(\.identifier).filter { $0.hasPrefix(idPrefix) }
+            let ours = pending.map(\.identifier)
+                .filter { $0.hasPrefix(idPrefix) && !$0.hasPrefix(snoozePrefix) }
             center.removePendingNotificationRequests(withIdentifiers: ours)
 
             // What the water reminders will take, so the two schedulers share the cap rather
@@ -119,6 +124,9 @@ enum HabitReminders {
     }
 
     /// Defers one reminder by an hour, from the lock screen.
+    ///
+    /// The id is unique per habit and deferral, so snoozing two habits (or the same habit
+    /// twice) keeps both nudges — a fixed id replaced the first snooze with the second.
     static func snooze(habitId: UUID?, day: Date?) {
         guard let habitId, let context = HabitsApp.sharedContainer.map({ ModelContext($0) }),
               let habit = try? context.fetch(FetchDescriptor<Habit>(predicate: #Predicate { $0.id == habitId })).first
@@ -127,8 +135,12 @@ enum HabitReminders {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: false)
         let content = notificationContent(for: habit, day: day ?? Date())
         content.title = "> \(habit.name) (in 1h)"
+        let stamp = ISO8601DateFormatter().string(from: Date())
         UNUserNotificationCenter.current().add(
-            UNNotificationRequest(identifier: "\(idPrefix)snooze", content: content, trigger: trigger)
+            UNNotificationRequest(
+                identifier: "\(snoozePrefix).\(habitId.uuidString).\(stamp)",
+                content: content, trigger: trigger
+            )
         )
     }
 

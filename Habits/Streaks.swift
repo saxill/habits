@@ -11,12 +11,22 @@ enum Streaks {
         var streak = 0
         var cursor = today.startOfDay(calendar: calendar)
         // Today not done yet doesn't break the streak — walk back from today or yesterday.
-        if !done.contains(cursor) { cursor = calendar.date(byAdding: .day, value: -1, to: cursor)! }
+        if !done.contains(cursor) { cursor = step(cursor, by: -1, calendar: calendar) }
         while done.contains(cursor) {
             streak += 1
-            cursor = calendar.date(byAdding: .day, value: -1, to: cursor)!
+            cursor = step(cursor, by: -1, calendar: calendar)
         }
         return streak
+    }
+
+    /// One day along the walk, re-normalised to midnight.
+    ///
+    /// `date(byAdding: .day)` from midnight lands outside the day it should name in zones
+    /// whose DST transition happens exactly at midnight (Chile, Egypt, Cuba): the cursor
+    /// drifts off the grid of day-starts the `done` set is built from, and the walk stops
+    /// early or never ends. Re-anchoring every step keeps it on that grid.
+    private static func step(_ day: Date, by value: Int, calendar: Calendar) -> Date {
+        (calendar.date(byAdding: .day, value: value, to: day) ?? day).startOfDay(calendar: calendar)
     }
 
     /// Best streak ever for a habit (ignores schedule gaps — any completion counts).
@@ -37,11 +47,11 @@ enum Streaks {
         let done = Set(completions.map { $0.day.startOfDay(calendar: calendar) })
         guard !done.isEmpty else { return 0 }
         var cursor = today.startOfDay(calendar: calendar)
-        if !done.contains(cursor) { cursor = calendar.date(byAdding: .day, value: -1, to: cursor)! }
+        if !done.contains(cursor) { cursor = step(cursor, by: -1, calendar: calendar) }
         var streak = 0
         while done.contains(cursor) {
             streak += 1
-            cursor = calendar.date(byAdding: .day, value: -1, to: cursor)!
+            cursor = step(cursor, by: -1, calendar: calendar)
         }
         return streak
     }
@@ -64,8 +74,16 @@ enum Streaks {
     }
 
     /// Completion ratio (0…1) for one habit on a given day — drives the week strip fill.
+    ///
+    /// Habits that did not exist yet are not "scheduled" on a day before their history
+    /// begins: without this bound, a habit created this month marked every earlier day of
+    /// the week strip and the overview heatmap as missed.
     static func dayRatio(_ day: Date, habits: [Habit], calendar: Calendar = .current) -> Double {
-        let scheduled = habits.filter { $0.scheduleDays.contains(weekdayIndex(day, calendar: calendar)) }
+        let day = day.startOfDay(calendar: calendar)
+        let scheduled = habits.filter {
+            Achievements.firstTrackedDay($0) <= day
+                && $0.scheduleDays.contains(weekdayIndex(day, calendar: calendar))
+        }
         guard !scheduled.isEmpty else { return -1 } // no habits → empty
         let done = scheduled.filter { $0.completion(on: day, calendar: calendar) != nil }.count
         return Double(done) / Double(scheduled.count)

@@ -349,8 +349,10 @@ private struct TimerProgress: View {
             } else {
                 // Both labels are explicitly empty: the default `currentValueLabel` for a
                 // timer progress view is a date label, which would duplicate the big timer.
+                // The interval starts at the pause-shifted origin, so resumed time excludes
+                // what pauses already ate.
                 ProgressView(
-                    timerInterval: context.state.startDate...(context.state.startDate + context.state.targetSeconds),
+                    timerInterval: context.shiftedStart...(context.shiftedStart + context.state.targetSeconds),
                     countsDown: false
                 ) {
                     EmptyView()
@@ -409,12 +411,12 @@ private func timerText(_ context: ActivityViewContext<TimerActivityAttributes>) 
     } else if context.isOverdue {
         // Past the target: a closed-range countdown would freeze at 00:00, so switch to
         // counting total elapsed instead — the number keeps moving.
-        Text(timerInterval: state.startDate...Date.distantFuture, countsDown: false)
+        Text(timerInterval: context.shiftedStart...Date.distantFuture, countsDown: false)
     } else if state.countDown {
         // closed range counts down and settles at 00:00
-        Text(timerInterval: state.startDate...(state.startDate + max(state.targetSeconds, 1)), countsDown: true)
+        Text(timerInterval: context.shiftedStart...(context.shiftedStart + max(state.targetSeconds, 1)), countsDown: true)
     } else {
-        Text(timerInterval: state.startDate...Date.distantFuture, countsDown: false)
+        Text(timerInterval: context.shiftedStart...Date.distantFuture, countsDown: false)
     }
 }
 
@@ -443,6 +445,13 @@ private extension ActivityViewContext where Attributes == TimerActivityAttribute
     /// the pause instant, so anything derived from it stays frozen until the timer resumes.
     var elapsedSeconds: TimeInterval {
         max(0, (state.pausedAt ?? Date()).timeIntervalSince(state.startDate) - state.pausedSeconds)
+    }
+
+    /// Where the auto-updating timer views start from: the session's origin pushed forward
+    /// by whatever time pauses already consumed. Without this, a pause-and-resume left the
+    /// countdown and progress bar pretending the paused minutes never happened.
+    var shiftedStart: Date {
+        state.startDate.addingTimeInterval(state.pausedSeconds)
     }
 
     /// Fraction of the target completed, frozen while paused. Clamped for `ProgressView`.

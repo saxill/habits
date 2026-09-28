@@ -138,13 +138,19 @@ enum Achievements {
         }
 
         let trackingStart = habits.map(firstTrackedDay).min() ?? today.startOfDay()
-        let start = max(trackingStart, calendar.date(byAdding: .day, value: -walkLimitDays, to: today)!)
+        // Both bounds re-anchored to midnight: the walk compares against a grid of
+        // day-starts, and a DST-at-midnight zone makes a raw date(byAdding:) step land
+        // off that grid (see Streaks.step).
+        let start = max(trackingStart,
+                        calendar.date(byAdding: .day, value: -walkLimitDays, to: today)!
+                            .startOfDay(calendar: calendar))
         let routines = distinctRoutines(of: habits)
 
         var run = 0
         var day = start
-        while day <= today.startOfDay() {
-            defer { day = calendar.date(byAdding: .day, value: 1, to: day)! }
+        let lastDay = today.startOfDay()
+        while day <= lastDay {
+            defer { day = calendar.date(byAdding: .day, value: 1, to: day)!.startOfDay(calendar: calendar) }
             let weekday = calendar.component(.weekday, from: day)
             // A habit only counts for days at or after it was first tracked.
             let scheduled = habits.filter {

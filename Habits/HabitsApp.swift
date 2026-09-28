@@ -18,6 +18,8 @@ struct HabitsApp: App {
             if DemoHistory.removeIfNeeded(context: container.mainContext) > 0 {
                 publishSharedSnapshot()
             }
+            // Days stored as local midnight shift when the time zone does; re-anchor once.
+            CompletionDayAnchor.migrateIfNeeded(context: container.mainContext)
         }
         NotificationRouter.shared.install()
         WaterReminders.sync()

@@ -167,7 +167,7 @@ final class Habit {
 @Model
 final class Completion {
     var id: UUID = UUID()
-    var day: Date = Date()          // normalized to start-of-day
+    var day: Date = Date()          // noon of the day it belongs to (Date.dayAnchor)
     var completedAt: Date = Date()  // wall-clock timestamp
     /// checkbox: 1; timed: elapsed seconds.
     var value: Double = 1
@@ -180,7 +180,10 @@ final class Completion {
     }
 
     init(day: Date, completedAt: Date, value: Double) {
-        self.day = day.startOfDay()
+        // Whatever form of the day a caller passes — midnight, noon, mid-afternoon — the
+        // model stores the noon anchor, the one shape that survives a time-zone change
+        // (see Date.dayAnchor). Every read goes through the calendar day either way.
+        self.day = day.startOfDay().dayAnchor()
         self.completedAt = completedAt
         self.value = value
     }
@@ -189,5 +192,15 @@ final class Completion {
 extension Date {
     func startOfDay(calendar: Calendar = .current) -> Date {
         calendar.startOfDay(for: self)
+    }
+
+    /// The stored form of a completion's day: **noon of that day, in the zone it was logged**.
+    ///
+    /// A midnight anchor moves when its zone moves: complete a habit, fly a few time zones,
+    /// and the stored midnight reads as the neighbouring day back home. Noon survives any
+    /// offset a zone is likely to move by, and every read goes through `startOfDay` /
+    /// `isDate(inSameDayAs:)`, so nothing downstream can tell the difference.
+    func dayAnchor(calendar: Calendar = .current) -> Date {
+        calendar.date(bySettingHour: 12, minute: 0, second: 0, of: self) ?? self
     }
 }

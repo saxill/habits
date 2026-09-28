@@ -30,7 +30,9 @@ enum PendingToggleApplier {
             }
             let day = cal.startOfDay(for: p.day)
 
-            // pause/resume from the live activity: clock stops, session stays open
+            // pause/resume from the live activity: clock stops, session stays open. The queue
+            // can hand this branch an entry that *also* carries a tick or a glass (the queue
+            // merges rather than replaces), so it no longer claims the whole entry.
             if let pause = p.pause {
                 let was = habit.isPaused
                 pause ? habit.pauseTimer() : habit.resumeTimer()
@@ -38,7 +40,6 @@ enum PendingToggleApplier {
                     changed = true
                     note("\(habit.name): \(pause ? "paused" : "resumed") at \(Int(habit.elapsedSeconds()))s elapsed")
                 }
-                continue
             }
 
             // "discard" from the live activity: stop the timer, record nothing
@@ -89,10 +90,16 @@ enum PendingToggleApplier {
                 } else {
                     note("\(habit.name): already done, no-op")
                 }
-            } else if let existing = habit.completion(on: day) {
+            } else if p.pause == nil, let existing = habit.completion(on: day) {
+                // An explicit un-tick. A pause-only entry carries `done == false` because it
+                // must say *something* — it must not un-tick the day it arrived on.
                 context.delete(existing)
                 habit.completions.removeAll { $0 == existing }
-                habit.clearTimer()
+                // The timer belongs to the day it was started on (DayReset's rule): un-ticking
+                // a past day must not stop today's run.
+                if let started = habit.startedAt, cal.isDate(started, inSameDayAs: day) {
+                    habit.clearTimer()
+                }
                 changed = true
             }
         }

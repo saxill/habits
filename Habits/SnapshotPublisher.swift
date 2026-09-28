@@ -16,6 +16,26 @@ enum SnapshotPublisher {
         let routines = (try? context.fetch(
             FetchDescriptor<Routine>(sortBy: [SortDescriptor(\Routine.sortIndex)])
         )) ?? []
+        // Habits filed under "none": they live in no routine, so without this pass they
+        // vanished from every widget while still counting in stats and reminders.
+        let unfiled = ((try? context.fetch(FetchDescriptor<Habit>())) ?? [])
+            .filter { $0.routine == nil }
+
+        func snapHabit(_ h: Habit) -> SnapshotHabit? {
+            guard h.scheduleDays.contains(Streaks.weekdayIndex(day)) else { return nil }
+            let isDone = h.completion(on: day) != nil
+            if isDone { done += 1 }
+            total += 1
+            return SnapshotHabit(
+                id: h.id,
+                name: h.name,
+                icon: h.icon,
+                colorHex: h.color.hex,
+                isTimed: h.type == .timed,
+                done: isDone,
+                streak: Streaks.habitStreak(h)
+            )
+        }
 
         var snapRoutines: [SnapshotRoutine] = []
         var done = 0
@@ -26,22 +46,22 @@ enum SnapshotPublisher {
             allHabits.append(contentsOf: r.habits)
             var habits: [SnapshotHabit] = []
             for h in r.habits.sorted(by: { $0.sortIndex < $1.sortIndex }) {
-                guard h.scheduleDays.contains(Streaks.weekdayIndex(day)) else { continue }
-                let isDone = h.completion(on: day) != nil
-                if isDone { done += 1 }
-                total += 1
-                habits.append(SnapshotHabit(
-                    id: h.id,
-                    name: h.name,
-                    icon: h.icon,
-                    colorHex: h.color.hex,
-                    isTimed: h.type == .timed,
-                    done: isDone,
-                    streak: Streaks.habitStreak(h)
-                ))
+                if let s = snapHabit(h) { habits.append(s) }
             }
             snapRoutines.append(SnapshotRoutine(
                 id: r.id, name: r.name, subtitle: r.subtitle, icon: r.icon, habits: habits
+            ))
+        }
+
+        if !unfiled.isEmpty {
+            allHabits.append(contentsOf: unfiled)
+            var habits: [SnapshotHabit] = []
+            for h in unfiled.sorted(by: { $0.sortIndex < $1.sortIndex }) {
+                if let s = snapHabit(h) { habits.append(s) }
+            }
+            snapRoutines.append(SnapshotRoutine(
+                id: UUID(uuidString: "00000000-0000-0000-0000-00000000C0DE") ?? UUID(),
+                name: "unfiled", subtitle: "// no routine", icon: "tray", habits: habits
             ))
         }
 

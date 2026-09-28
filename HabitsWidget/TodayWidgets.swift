@@ -38,17 +38,27 @@ private func mono(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font {
 private extension HabitsSnapshot {
     var ratio: Double { totalCount == 0 ? 0 : Double(doneCount) / Double(totalCount) }
     var remaining: [SnapshotHabit] { flatHabits.filter { !$0.done } }
+    /// The snapshot is what the app last published — which after midnight is yesterday's
+    /// day until the app runs again. Yesterday's rows must not be tappable: a tap would
+    /// toggle *yesterday*, so a stale widget only reports and waits.
+    var isStale: Bool { !Calendar.current.isDate(day, inSameDayAs: Date()) }
 }
 
-/// Terminal-styled row: `[✓] read`. Tapping it toggles the habit in place (iOS 17
-/// interactive widget) — the tap is handled by ToggleHabitIntent inside the extension.
+private func widgetTimerLabel(_ seconds: TimeInterval) -> String {
+    let total = Int(seconds.rounded())
+    guard total > 0 else { return "--:--" }
+    return total >= 3600
+        ? String(format: "%d:%02d:%02d", total / 3600, (total / 60) % 60, total % 60)
+        : String(format: "%d:%02d", total / 60, total % 60)
+}
+
+/// Terminal-styled row: `[✓] read`. The tappable form wraps it in a `ToggleHabitIntent`
+/// button (iOS 17 interactive widget) — handled inside the extension.
 private struct WidgetHabitLine: View {
     let habit: SnapshotHabit
-    var day: Date
-    var interactive = true
 
     var body: some View {
-        let row = HStack(spacing: 4) {
+        HStack(spacing: 4) {
             Text(habit.done ? "[✓]" : "[ ]")
                 .font(mono(10, .semibold))
                 .foregroundStyle(.primary)
@@ -59,15 +69,17 @@ private struct WidgetHabitLine: View {
                 .lineLimit(1)
             Spacer(minLength: 0)
         }
+    }
 
+    static func tappable(_ habit: SnapshotHabit, day: Date, interactive: Bool) -> some View {
+        let row = WidgetHabitLine(habit: habit)
         if interactive {
-            Button(intent: ToggleHabitIntent(habitId: habit.id, day: day, done: !habit.done)) {
+            return AnyView(Button(intent: ToggleHabitIntent(habitId: habit.id, day: day, done: !habit.done)) {
                 row
             }
-            .buttonStyle(.plain)
-        } else {
-            row
+            .buttonStyle(.plain))
         }
+        return AnyView(row)
     }
 }
 
@@ -108,7 +120,7 @@ struct TodayWidgetView: View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 3) {
                 Text(">").font(mono(10, .bold)).foregroundStyle(accent)
-                Text("today").font(mono(10)).foregroundStyle(comment)
+                Text(snapshot.isStale ? "yesterday" : "today").font(mono(10)).foregroundStyle(comment)
                 Spacer(minLength: 0)
                 if snapshot.streak > 0 {
                     Image(systemName: "flame.fill").font(.system(size: 9))
@@ -132,9 +144,17 @@ struct TodayWidgetView: View {
                 HStack(spacing: 3) {
                     Image(systemName: "timer").font(.system(size: 9)).foregroundStyle(accent)
                     Text(run.name).font(mono(9)).foregroundStyle(comment).lineLimit(1)
-                    Text(timerInterval: run.startedAt...Date.distantFuture, countsDown: false)
-                        .font(mono(9, .semibold)).foregroundStyle(foreground)
-                        .multilineTextAlignment(.leading)
+                    // Pauses don't count toward the elapsed time. Paused has to be a static
+                    // label: Text(timerInterval:) is driven by the wall clock and cannot stop.
+                    if let pausedAt = run.pausedAt {
+                        Text(widgetTimerLabel(max(0, pausedAt.timeIntervalSince(run.startedAt) - run.pausedSeconds)))
+                            .font(mono(9, .semibold)).foregroundStyle(foreground)
+                    } else {
+                        Text(timerInterval: run.startedAt.addingTimeInterval(run.pausedSeconds)...Date.distantFuture,
+                             countsDown: false)
+                            .font(mono(9, .semibold)).foregroundStyle(foreground)
+                            .multilineTextAlignment(.leading)
+                    }
                 }
             } else {
                 Text("// \(snapshot.remaining.count) left")
@@ -148,7 +168,7 @@ struct TodayWidgetView: View {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 3) {
                     Text(">").font(mono(10, .bold)).foregroundStyle(accent)
-                    Text("today").font(mono(10)).foregroundStyle(comment)
+                    Text(snapshot.isStale ? "yesterday" : "today").font(mono(10)).foregroundStyle(comment)
                 }
                 Text("[\(snapshot.doneCount)/\(snapshot.totalCount)]")
                     .font(mono(26, .bold))
@@ -169,7 +189,7 @@ struct TodayWidgetView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 ForEach(displayed) { habit in
-                    WidgetHabitLine(habit: habit, day: snapshot.day)
+                    WidgetHabitLine.tappable(habit, day: snapshot.day, interactive: !snapshot.isStale)
                 }
                 Spacer(minLength: 0)
             }
@@ -249,7 +269,7 @@ struct LockWidgetView: View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 3) {
                 Text(">").font(mono(11, .bold))
-                Text("today").font(mono(11))
+                Text(snapshot.isStale ? "yesterday" : "today").font(mono(11))
                 Text("[\(snapshot.doneCount)/\(snapshot.totalCount)]").font(mono(11, .semibold))
                 if snapshot.streak > 0 {
                     Image(systemName: "flame.fill").font(.system(size: 9))
@@ -257,7 +277,7 @@ struct LockWidgetView: View {
                 }
             }
             ForEach(Array(nextUp.prefix(2))) { habit in
-                WidgetHabitLine(habit: habit, day: snapshot.day)
+                WidgetHabitLine.tappable(habit, day: snapshot.day, interactive: !snapshot.isStale)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
