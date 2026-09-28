@@ -118,6 +118,28 @@ final class AuditFixTests: XCTestCase {
         XCTAssertNotNil(h.completion(on: Date()))
     }
 
+    // MARK: yesterday cannot be completed
+
+    /// A widget or notification tap cannot tick a past day. Un-ticking stays legal —
+    /// corrections are allowed, backfilling is not.
+    func testATickForAPastDayIsDropped() {
+        let h = habit()
+        let yesterday = cal.date(byAdding: .day, value: -1, to: Date())!
+        toggle(h, yesterday, true)
+        PendingToggleApplier.apply(context: context)
+        XCTAssertNil(h.completion(on: yesterday), "yesterday must stay unticked")
+        XCTAssertTrue(h.completions.isEmpty, "no completion may be created for a past day")
+    }
+
+    /// Today is still tickable through the same queue, so the block targets the day, not
+    /// the path.
+    func testTodayIsStillTickableThroughTheQueue() {
+        let h = habit()
+        toggle(h, Date(), true)
+        PendingToggleApplier.apply(context: context)
+        XCTAssertNotNil(h.completion(on: Date()))
+    }
+
     // MARK: the week strip before a habit existed
 
     /// A habit created this month must not mark last month's days as missed (ratio 0);

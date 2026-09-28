@@ -564,6 +564,10 @@ struct HabitRow: View {
                     BracketCheckbox(checked: completion != nil, color: color)
                 }
                 .buttonStyle(.plain)
+                // Yesterday is not waiting for a tick: faded rather than tappable, so the
+                // row explains itself instead of swallowing taps.
+                .disabled(!isToday && completion == nil)
+                .opacity(!isToday && completion == nil ? 0.4 : 1)
 
                 Image(systemName: habit.icon)
                     .font(.system(size: 12, design: .monospaced))
@@ -758,7 +762,13 @@ struct HabitRow: View {
                 habit.clearTimer()
                 LiveActivityController.shared.stop(habitId: habit.id, done: false)
             }
-        } else if habit.type == .timed, isToday {
+        } else if !isToday {
+            // A completion is stamped with the moment it was made, so a tick placed on a
+            // past day would read as "done that day" while being a lie the stats, streaks
+            // and achievements all believe. Past days can be corrected (un-ticked), never
+            // completed. Same rule the applier enforces for widget and notification taps.
+            return
+        } else if habit.type == .timed {
             if habit.startedAt == nil {
                 // start timer + Dynamic Island live activity
                 habit.startTimer()

@@ -179,8 +179,9 @@ enum HabitReminders {
         content.categoryIdentifier = categoryId
         content.userInfo = [
             "habitId": habit.id.uuidString,
-            // The day it is *for*, not the day it was tapped: a reminder can be actioned after
-            // midnight from the lock screen, and "done" should credit the day it asked about.
+            // The day it is *for*, not the day it was tapped — diagnostics and the sync use it.
+            // Note: since 2026-09-28 past days cannot be completed, so a "done" actioned after
+            // midnight for the previous day's reminder is dropped, not credited to yesterday.
             "day": ISO8601DateFormatter().string(from: Calendar.current.startOfDay(for: day)),
         ]
         return content

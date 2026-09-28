@@ -13,47 +13,57 @@
 				<key>testAPauseOnlyEntryDoesNotUntickADoneDay</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.045314908027648926</real>
+					<real>0.044759988784790039</real>
 				</dict>
 				<key>testAQueuedTickSurvivesALaterPause</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.017292022705078125</real>
+					<real>0.017773985862731934</real>
+				</dict>
+				<key>testATickForAPastDayIsDropped</key>
+				<dict>
+					<key>mrnet</key>
+					<real>0.01143801212310791</real>
 				</dict>
 				<key>testDayAnchorMigrationMovesMidnightsOnce</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.015136003494262695</real>
+					<real>0.015496015548706055</real>
 				</dict>
 				<key>testDayRatioIsEmptyBeforeTheHabitWasTracked</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0060840845108032227</real>
+					<real>0.0060700178146362305</real>
 				</dict>
 				<key>testDiscardSupersedesAQueuedTick</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.014500975608825684</real>
+					<real>0.013954043388366699</real>
 				</dict>
 				<key>testNewCompletionsAnchorAtNoon</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.006193995475769043</real>
+					<real>0.0061240196228027344</real>
 				</dict>
 				<key>testStreakWalkSurvivesAMidnightDSTJump</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0095139741897583008</real>
+					<real>0.010363936424255371</real>
+				</dict>
+				<key>testTodayIsStillTickableThroughTheQueue</key>
+				<dict>
+					<key>mrnet</key>
+					<real>0.014276981353759766</real>
 				</dict>
 				<key>testUntickingAPastDayKeepsTodaysRunningTimer</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.018113970756530762</real>
+					<real>0.018787980079650879</real>
 				</dict>
 				<key>testUntickingTodayStopsTheTimer</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.014053940773010254</real>
+					<real>0.014997959136962891</real>
 				</dict>
 			</dict>
 			<key>DayResetTests</key>
@@ -61,32 +71,32 @@
 				<key>testResetClearsOnlyTheChosenDay</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.017277002334594727</real>
+					<real>0.018406033515930176</real>
 				</dict>
 				<key>testResetStopsTodaysTimerAndLeavesAnOlderOneRunning</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0091130733489990234</real>
+					<real>0.0086929798126220703</real>
 				</dict>
 				<key>testResettingAnEmptyDayDropsNothing</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0085589885711669922</real>
+					<real>0.0089859962463378906</real>
 				</dict>
 				<key>testTheReceiptCarriesTheValueAndTheTimestampBack</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.014708042144775391</real>
+					<real>0.014889955520629883</real>
 				</dict>
 				<key>testUndoNeverMakesASecondCompletionForTheDay</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.015177011489868164</real>
+					<real>0.0143280029296875</real>
 				</dict>
 				<key>testUndoRestoresASessionAsACompletionRatherThanARunningClock</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.016550898551940918</real>
+					<real>0.01530301570892334</real>
 				</dict>
 			</dict>
 			<key>DemoHistoryTests</key>
@@ -94,32 +104,32 @@
 				<key>testAHabitAddedLaterIsNeverTouched</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.011273980140686035</real>
+					<real>0.011165022850036621</real>
 				</dict>
 				<key>testAPastDayTickedAfterwardsIsKept</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0084400177001953125</real>
+					<real>0.0080590248107910156</real>
 				</dict>
 				<key>testASeededCompletionIsRecognised</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0072289705276489258</real>
+					<real>0.0076760053634643555</real>
 				</dict>
 				<key>testATickOnOrAfterTheInstallDayIsKept</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0085679292678833008</real>
+					<real>0.007866978645324707</real>
 				</dict>
 				<key>testAnInstallThatNeverSeededHistoryIsLeftAlone</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.011902093887329102</real>
+					<real>0.011545062065124512</real>
 				</dict>
 				<key>testRemovesOnlySeededCompletionsAndOnlyOnce</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.023033976554870605</real>
+					<real>0.021727919578552246</real>
 				</dict>
 			</dict>
 			<key>HabitReminderTests</key>
@@ -127,47 +137,47 @@
 				<key>testArbitraryMinuteIsKeptExactly</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0038139820098876953</real>
+					<real>0.0036439895629882812</real>
 				</dict>
 				<key>testCompletedTodayIsSilentButTomorrowIsNot</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0025390386581420898</real>
+					<real>0.0029529333114624023</real>
 				</dict>
 				<key>testCompletionOnAnotherDayDoesNotSilenceToday</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0032819509506225586</real>
+					<real>0.002368927001953125</real>
 				</dict>
 				<key>testFixtureDatesAreWhatTheTestsAssume</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0014580488204956055</real>
+					<real>0.0015759468078613281</real>
 				</dict>
 				<key>testHabitWithoutAReminderIsNotScheduled</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0017080307006835938</real>
+					<real>0.0015920400619506836</real>
 				</dict>
 				<key>testOccurrencesAreSortedSoonestFirstAcrossHabits</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0023729801177978516</real>
+					<real>0.0025180578231811523</real>
 				</dict>
 				<key>testSchedulesEveryRemainingDayInTheWindow</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0021829605102539062</real>
+					<real>0.0021979808807373047</real>
 				</dict>
 				<key>testTodaysReminderIsSkippedOnceItsTimeHasPassed</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0025839805603027344</real>
+					<real>0.0027849674224853516</real>
 				</dict>
 				<key>testWeekdayOnlyHabitSkipsTheWeekend</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.003168940544128418</real>
+					<real>0.0026589632034301758</real>
 				</dict>
 			</dict>
 			<key>WaterGlassTests</key>
@@ -175,37 +185,37 @@
 				<key>testAGlassTallyDoesNotUnlockTheTimedSessionAchievement</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.019055962562561035</real>
+					<real>0.018796920776367188</real>
 				</dict>
 				<key>testATimedHabitIsNeverMistakenForWater</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0066049098968505859</real>
+					<real>0.0063110589981079102</real>
 				</dict>
 				<key>testATimedSessionStillUnlocksTheTimedSessionAchievement</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0065420866012573242</real>
+					<real>0.0065209865570068359</real>
 				</dict>
 				<key>testEachGlassAddsToTheDaysTally</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.022675037384033203</real>
+					<real>0.021313071250915527</real>
 				</dict>
 				<key>testGlassesAreCountedPerDay</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.037253022193908691</real>
+					<real>0.037551999092102051</real>
 				</dict>
 				<key>testTheTallyNeverCreatesASecondCompletion</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.024283051490783691</real>
+					<real>0.025080084800720215</real>
 				</dict>
 				<key>testTwoQueuedGlassesBeforeApplyingAreBothCounted</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.015524983406066895</real>
+					<real>0.01541602611541748</real>
 				</dict>
 			</dict>
 			<key>WaterReminderTests</key>
@@ -213,22 +223,22 @@
 				<key>testDegenerateWindowsAndIntervalsScheduleNothing</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.001788020133972168</real>
+					<real>0.0014399290084838867</real>
 				</dict>
 				<key>testEveryOfferedCombinationFitsTheSystemCap</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.001607060432434082</real>
+					<real>0.0014469623565673828</real>
 				</dict>
 				<key>testHalfHourIntervalProducesHalfHourSlots</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0015459060668945312</real>
+					<real>0.0013589859008789062</real>
 				</dict>
 				<key>testSlotsRunInclusiveOfTheEndHour</key>
 				<dict>
 					<key>mrnet</key>
-					<real>0.0013660192489624023</real>
+					<real>0.0015660524368286133</real>
 				</dict>
 			</dict>
 		</dict>
@@ -239,12 +249,12 @@
 				<key>testArmingTheResetDoesNotClearAnything</key>
 				<dict>
 					<key>mrnet</key>
-					<real>21.050462961196899</real>
+					<real>24.041141986846924</real>
 				</dict>
 				<key>testResetTodayClearsTheDayAndUndoPutsItBack</key>
 				<dict>
 					<key>mrnet</key>
-					<real>21.507004022598267</real>
+					<real>21.545819997787476</real>
 				</dict>
 			</dict>
 			<key>KeyboardDismissTests</key>
@@ -252,22 +262,22 @@
 				<key>testDoneKeyDismissesTheKeyboard</key>
 				<dict>
 					<key>mrnet</key>
-					<real>15.297229051589966</real>
+					<real>15.697526097297668</real>
 				</dict>
 				<key>testDraggingTheProfileDismissesTheKeyboard</key>
 				<dict>
 					<key>mrnet</key>
-					<real>14.791404008865356</real>
+					<real>15.792895913124084</real>
 				</dict>
 				<key>testReturnKeyDismissesTheKeyboard</key>
 				<dict>
 					<key>mrnet</key>
-					<real>14.204577088356018</real>
+					<real>13.948982000350952</real>
 				</dict>
 				<key>testTappingTheBackgroundDismissesTheKeyboard</key>
 				<dict>
 					<key>mrnet</key>
-					<real>13.140166997909546</real>
+					<real>12.049986004829407</real>
 				</dict>
 			</dict>
 			<key>ReminderTests</key>
@@ -275,27 +285,27 @@
 				<key>testEnablingWaterRemindersSchedulesADaysWorth</key>
 				<dict>
 					<key>mrnet</key>
-					<real>9.0938179492950439</real>
+					<real>8.643718957901001</real>
 				</dict>
 				<key>testLoggingAGlassFromProfileAdvancesTheTally</key>
 				<dict>
 					<key>mrnet</key>
-					<real>11.650480985641479</real>
+					<real>11.053117036819458</real>
 				</dict>
 				<key>testSettingAReminderInTheEditorShowsOnTheRowAndSchedules</key>
 				<dict>
 					<key>mrnet</key>
-					<real>34.946786046028137</real>
+					<real>33.94551408290863</real>
 				</dict>
 				<key>testTestReminderIsActuallyDelivered</key>
 				<dict>
 					<key>mrnet</key>
-					<real>18.249225974082947</real>
+					<real>15.935446977615356</real>
 				</dict>
 				<key>testTheWaterRowHasItsOwnLogGlassButton</key>
 				<dict>
 					<key>mrnet</key>
-					<real>10.056869029998779</real>
+					<real>8.8478249311447144</real>
 				</dict>
 			</dict>
 			<key>SwipeNavigationTests</key>
@@ -303,32 +313,32 @@
 				<key>testHorizontalDragOnChipRowScrollsWithoutChangingTab</key>
 				<dict>
 					<key>mrnet</key>
-					<real>10.429041981697083</real>
+					<real>9.6127620935440063</real>
 				</dict>
 				<key>testShortDragDoesNotLeaveAchievements</key>
 				<dict>
 					<key>mrnet</key>
-					<real>9.4993389844894409</real>
+					<real>8.7896000146865845</real>
 				</dict>
 				<key>testSwipeLeftOnAchievementsDoesNotGoBack</key>
 				<dict>
 					<key>mrnet</key>
-					<real>9.7484300136566162</real>
+					<real>8.9451349973678589</real>
 				</dict>
 				<key>testSwipeRightFromMiddleGoesBackFromAchievements</key>
 				<dict>
 					<key>mrnet</key>
-					<real>10.299697995185852</real>
+					<real>9.4931869506835938</real>
 				</dict>
 				<key>testSwipeStepsThroughTabsBothWays</key>
 				<dict>
 					<key>mrnet</key>
-					<real>21.70932400226593</real>
+					<real>20.849844098091125</real>
 				</dict>
 				<key>testVerticalDragDoesNotChangeTab</key>
 				<dict>
 					<key>mrnet</key>
-					<real>9.336266040802002</real>
+					<real>9.0500789880752563</real>
 				</dict>
 			</dict>
 		</dict>

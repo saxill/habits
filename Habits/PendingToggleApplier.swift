@@ -71,6 +71,13 @@ enum PendingToggleApplier {
             }
 
             if p.done {
+                // Past days can be corrected, never completed: a tick is stamped with the
+                // moment it was made, so one placed on yesterday would read as "done that
+                // day" while being a lie. Same rule the habit row enforces in-app.
+                guard cal.isDate(day, inSameDayAs: Date()) else {
+                    note("\(habit.name): tick for a past day dropped")
+                    continue
+                }
                 // Mirrors HabitRow.toggle: checking a running timer records the elapsed time.
                 if habit.type == .timed, habit.startedAt != nil, cal.isDate(day, inSameDayAs: Date()) {
                     // Pauses don't count toward the logged value.

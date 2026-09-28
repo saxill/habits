@@ -6,65 +6,6 @@
 	<integer>12</integer>
 	<key>logs</key>
 	<dict>
-		<key>00FAD28C-BF6B-4F42-ACCF-6B464B08E8C0</key>
-		<dict>
-			<key>auxiliaryLogUniqueIdentifier</key>
-			<string>514C3AC1-9891-4EBA-B36F-8370524675A4</string>
-			<key>auxiliaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>S</string>
-				<key>totalNumberOfAnalyzerIssues</key>
-				<integer>0</integer>
-				<key>totalNumberOfErrors</key>
-				<integer>0</integer>
-				<key>totalNumberOfTestFailures</key>
-				<integer>0</integer>
-				<key>totalNumberOfWarnings</key>
-				<integer>0</integer>
-			</dict>
-			<key>className</key>
-			<string>IDESchemeActionsInvocationRecord</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>com.apple.dt.unit.cocoaUnitTest</string>
-			<key>fileName</key>
-			<string>Test-Habits-2026.09.28_09-45-43-+0530.xcresult</string>
-			<key>hasAuxiliaryLog</key>
-			<true/>
-			<key>hasPrimaryLog</key>
-			<true/>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>T</string>
-				<key>totalNumberOfAnalyzerIssues</key>
-				<integer>0</integer>
-				<key>totalNumberOfErrors</key>
-				<integer>0</integer>
-				<key>totalNumberOfTestFailures</key>
-				<integer>2</integer>
-				<key>totalNumberOfWarnings</key>
-				<integer>0</integer>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>Habits project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>Habits</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Test Habits</string>
-			<key>timeStartedRecording</key>
-			<real>812261743.28373599</real>
-			<key>timeStoppedRecording</key>
-			<real>812262104.84868801</real>
-			<key>title</key>
-			<string>Test Habits</string>
-			<key>uniqueIdentifier</key>
-			<string>00FAD28C-BF6B-4F42-ACCF-6B464B08E8C0</string>
-		</dict>
 		<key>517513BB-B961-4EC7-A712-F956491F3E20</key>
 		<dict>
 			<key>auxiliaryLogUniqueIdentifier</key>
@@ -123,6 +64,65 @@
 			<string>Test Habits</string>
 			<key>uniqueIdentifier</key>
 			<string>517513BB-B961-4EC7-A712-F956491F3E20</string>
+		</dict>
+		<key>8DD029ED-2A77-45E3-9281-E44570938FBA</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>4D88FFEB-3085-4835-AF9D-16A605342C53</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>0</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>0</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>0</integer>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.unit.cocoaUnitTest</string>
+			<key>fileName</key>
+			<string>Test-Habits-2026.09.28_10-10-45-+0530.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>T</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>0</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>1</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>0</integer>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>Habits project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>Habits</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Test Habits</string>
+			<key>timeStartedRecording</key>
+			<real>812263245.44113803</real>
+			<key>timeStoppedRecording</key>
+			<real>812263610.55779505</real>
+			<key>title</key>
+			<string>Test Habits</string>
+			<key>uniqueIdentifier</key>
+			<string>8DD029ED-2A77-45E3-9281-E44570938FBA</string>
 		</dict>
 	</dict>
 </dict>
