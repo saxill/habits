@@ -1,6 +1,32 @@
-build/
-/*.png
-la.log
+# macOS
 .DS_Store
+
+# Claude Code local state
+.claude/
+
+# ---------- iOS / Xcode ----------
+ios/build/
+ios/DerivedData/
+ios/.build/
+ios/.build-device/
+ios/.build-release/
+ios/*.png
+*.xcuserstate
+*.xcuserdatad/
 xcuserdata/
-.build-device/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+la.log
+
+# ---------- Android / Gradle ----------
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/captures/
+android/.cxx/
