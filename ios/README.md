@@ -2,7 +2,7 @@
 
 A daily habit tracker whose entire UI reads like a Unix shell session — prompts,
 `//` comments, bracket checkboxes, monospace throughout. Built from
-`~/Downloads/habit-tracker-prd.md` (MVP scope, PRD §10).
+`~/Downloads/habit-tracker-prd.md`.
 
 ## Run it
 
@@ -23,7 +23,7 @@ xcrun simctl install booted ./build/Build/Products/Debug-iphonesimulator/Habits.
 xcrun simctl launch booted com.sahil.habits.term
 ```
 
-## What's in (MVP)
+## What's in
 
 - **Habits tab** — prompt header, rotating `//` tagline, date row, overall streak
   (🔥 / 🛡 freeze tokens), Mon–Sun week strip with per-day completion fill,
@@ -37,10 +37,23 @@ xcrun simctl launch booted com.sahil.habits.term
 - **Profile tab** — username (15-char counter), 3 themes (ansi dark / dracula /
   solarized dark) with ANSI swatch dots, prompt symbol, 3 text sizes,
   cross-out + move-completed-to-bottom toggles, live preview row.
+- **Achievements** — a tier ladder per metric (completions, goal days,
+  dedication, routine runs) with XP and milestones, pushed from the Profile tab.
+  Every number is derived from completion history, so un-checking honestly
+  un-earns what it paid for.
 - **Live Activities** — running a timed habit posts an ActivityKit live
   activity: elapsed timer + progress on the Dynamic Island (device only —
   the island does not render live activities in the simulator) and the lock
   screen banner.
+- **Water reminders** — a `glass of water` habit keeps a glass tally in the
+  completion's `value` alongside its own reminder window, so the count moves
+  without a day ever having two completions.
+- **Home-screen and lock-screen widgets** — `TodayWidget` and `LockWidget` in
+  `HabitsWidget/`, fed from the published snapshot. A widget tap can't reach the
+  database (it can start the process on its own), so it records the intent and
+  the app folds it in on the next publish.
+- **Custom themes** — the three built-ins plus a `ThemeEditorView` sheet to edit
+  and keep your own.
 - First launch seeds 3 routines / 7 habits / 9 days of history so everything
   is alive immediately. Streaks are derived from completion history, never
   stored (PRD §7).
@@ -61,10 +74,9 @@ SIMCTL_CHILD_DEBUG_TAB=profile xcrun simctl launch booted com.sahil.habits.term
 project.yml          xcodegen spec (app + widget extension)
 Shared/              TimerActivityAttributes (app ↔ widget)
 Habits/              app target: models, streaks, theme, views
-HabitsWidget/        widget extension: Dynamic Island + lock screen UI
+HabitsWidget/        widget extension: today's habits, lock screen, Dynamic Island
 ```
 
-## v2 (per PRD)
+## Still to come (per PRD)
 
-Achievements/XP/tiers, HealthKit sleep sync, Month/Week chart views,
-home-screen widget, custom app icons, expanded theme store.
+HealthKit sleep sync, Month/Week chart views, custom app icons.

@@ -7,8 +7,18 @@ prompts, `//` comments, bracket checkboxes, monospace throughout.
 
 | | Path | Status |
 |---|---|---|
-| iOS | [`ios/`](ios/) | SwiftUI + SwiftData, iOS 17+, home-screen widget, Live Activities |
-| Android | [`android/`](android/) | Kotlin + Jetpack Compose, in progress |
+| iOS | [`ios/`](ios/) | done — SwiftUI + SwiftData, iOS 17+, home-screen widget, Live Activities |
+| Android | [`android/`](android/) | done — Kotlin + Jetpack Compose, Room, Glance widgets, ongoing-notification timer |
+
+## Download
+
+[Release v1.0](https://github.com/saxill/habits/releases/tag/v1.0) carries both
+apps. `habits-android-debug.apk` is debug-signed and installs on any Android
+phone. `Habits.ipa` is development-signed under Apple team `K75VPCXM64`, so it
+installs **only on the single iPhone registered to that team**, and its
+provisioning profile expires **2026-10-13** — after that it must be rebuilt to
+launch. [`docs/install.md`](docs/install.md) has both routes and the from-source
+build for each platform.
 
 ## What it does
 
@@ -44,4 +54,22 @@ driving hooks, and the module layout.
 
 ## Android
 
-Not yet. See `android/README.md` once it exists.
+Kotlin + Jetpack Compose, Room, Glance widgets, and an ongoing notification with
+a live chronometer in place of the Live Activity. At parity with the iOS build —
+same three tabs, same derived-only stats, same terminal chrome.
+
+```bash
+cd android
+./gradlew testDebugUnitTest   # the unit tests — no device, no network
+./gradlew assembleDebug       # the APK
+```
+
+Requires JDK 17 and the Android SDK, its location set as `sdk.dir` in
+`android/local.properties`. See [`android/README.md`](android/README.md) for the
+module layout and the iOS→Android mapping.
+
+## Documentation
+
+[`docs/`](docs/README.md) indexes everything: the cross-platform
+[architecture](docs/architecture.md) explainer, [install](docs/install.md)
+instructions, and the two per-platform guides.
