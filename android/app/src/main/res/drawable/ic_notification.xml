@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The status-bar icon: a shell prompt, `>` and a cursor block.
+
+  Notification icons are masked to a single colour by the system, so this is drawn in flat white and
+  carries no theme colour of its own — a themed icon would come out as a grey blob.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M4.6,6.4L11.4,12L4.6,17.6L6.2,19.4L14.6,12L6.2,4.6Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M13.5,17.4L20.5,17.4L20.5,19.6L13.5,19.6Z" />
+</vector>

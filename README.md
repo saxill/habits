@@ -24,6 +24,12 @@ prompts, `//` comments, bracket checkboxes, monospace throughout.
 
 Streaks are always derived from completion history, never stored.
 
+## Screenshots
+
+| Habits | Stats | Profile |
+|---|---|---|
+| ![Habits tab](docs/screenshots/habits.png) | ![Stats tab](docs/screenshots/stats.png) | ![Profile tab](docs/screenshots/profile.png) |
+
 ## iOS
 
 ```bash

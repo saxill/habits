@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The activity's theme.
+
+  Deliberately the platform's own `Material.NoActionBar` rather than an AppCompat or Material
+  Components theme: this app has no AppCompat dependency and no XML views at all, so all the theme
+  has to do is get out of the way — no action bar, a black window background so the first frame
+  before Compose draws is not a white flash, and transparent system bars for edge-to-edge.
+-->
+<resources>
+    <style name="Theme.Habits" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/terminal_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

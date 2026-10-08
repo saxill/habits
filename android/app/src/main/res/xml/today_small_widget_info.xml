@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The 2x2 widget: the tally, the character bar and the streak, with no habit list. It exists
+  separately from the 4x2 rather than as one resizable widget so each size's layout is decided at
+  composition time instead of guessed from a measured width.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_today_small_description"
+    android:initialLayout="@layout/widget_initial"
+    android:minHeight="110dp"
+    android:minResizeHeight="110dp"
+    android:minResizeWidth="110dp"
+    android:minWidth="110dp"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen" />

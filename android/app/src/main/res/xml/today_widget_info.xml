@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The 4x2 widget.
+
+  `updatePeriodMillis` is half an hour and is only the day-rollover backstop: the app pushes a fresh
+  composition on every publish, so the period is not what keeps this current. It cannot be shorter
+  than 30 minutes anyway — the platform clamps it — which is why relying on it would be wrong.
+-->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_today_description"
+    android:initialLayout="@layout/widget_initial"
+    android:minHeight="110dp"
+    android:minResizeHeight="110dp"
+    android:minResizeWidth="180dp"
+    android:minWidth="250dp"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen" />

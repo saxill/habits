@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The launcher icon's foreground: the same shell prompt as the notification icon, in the terminal's
+  amber, drawn inside the 72dp safe zone of the 108dp adaptive canvas so no launcher mask clips it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFB454"
+        android:pathData="M33,41L49.5,54L33,67L37.5,71.5L58.5,54L37.5,36.5Z" />
+    <path
+        android:fillColor="#FFFFB454"
+        android:pathData="M58,66L76,66L76,71.5L58,71.5Z" />
+</vector>

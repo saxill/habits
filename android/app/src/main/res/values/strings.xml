@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Habits$</string>
+
+    <!-- Widget labels. The `$` prefix is the app's own prompt, so the picker reads like a shell. -->
+    <string name="widget_today_label">$ today</string>
+    <string name="widget_today_small_label">$ today (small)</string>
+    <string name="widget_today_description">// today\'s progress and streaks</string>
+    <string name="widget_today_small_description">// today\'s tally at a glance</string>
+
+    <!-- Placeholder text the widget gallery renders before Glance draws the real content. -->
+    <string name="widget_placeholder">$ habits</string>
+</resources>

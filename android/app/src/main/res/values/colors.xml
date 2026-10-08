@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The two colours the platform needs before Compose runs: the launcher icon's background and the
+  window background. Every other colour in the app comes from the terminal theme, which is a
+  user-editable preference and could not live in a resource file anyway.
+-->
+<resources>
+    <color name="terminal_background">#FF000000</color>
+    <color name="launcher_background">#FF000000</color>
+</resources>
